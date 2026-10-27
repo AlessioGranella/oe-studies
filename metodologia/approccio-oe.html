@@ -24,14 +24,24 @@ img,svg{max-width:100%}
 
 /* ---- testo ---- */
 h2{margin:0 0 var(--oe-space-m);max-width:none;text-wrap:balance}
-h3.sub{font-family:var(--oe-font-sans);font-weight:600;font-size:20px;line-height:1.3;margin:var(--oe-space-3xl) 0 var(--oe-space-xs)}
+h3.sub{font-family:var(--oe-font-sans);font-weight:600;font-size:20px;line-height:1.3;margin:0 0 var(--oe-space-xs)}
 h4{font-family:var(--oe-font-sans);font-weight:600;font-size:18px;line-height:1.3;margin:0}
 p{margin:0 0 var(--oe-space-s);color:var(--oe-fg-soft);max-width:none;text-wrap:pretty;font-size:18px;line-height:1.5}
 .lead{font-size:21px}
 strong{font-weight:600;color:var(--oe-fg)}
 
+/* ---- numeri nella hero ---- */
+.hero-stats{display:flex;flex-wrap:wrap;gap:var(--oe-space-xl) var(--oe-space-2xl);margin-top:var(--oe-space-xl)}
+.hero-stats .oe-stat__label{color:rgba(255,255,255,.86)} /* on-dark-muted sul viola scuro è sotto WCAG, come nella home */
+
+/* ---- approfondisci: riquadro scuro in fondo a ogni percorso ---- */
+.banner{display:flex;align-items:center;justify-content:space-between;gap:var(--oe-space-l);flex-wrap:wrap;
+  margin-top:var(--oe-space-2xl);padding:var(--oe-space-xl);background:var(--oe-bg-dark)}
+.banner__title{font-family:var(--oe-font-serif);font-weight:400;font-size:clamp(28px,2.6vw,36px);line-height:1.15;color:var(--oe-white);margin:0}
+.banner__meta{font-family:var(--oe-font-mono);font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:rgba(255,255,255,.86);margin:var(--oe-space-xs) 0 0}
+
 /* ---- due percorsi ---- */
-.paths{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--oe-space-s);margin-top:var(--oe-space-s)}
+.paths{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--oe-space-s)}
 .path{display:block;border:1px solid var(--oe-gray-200);padding:var(--oe-space-m);color:inherit;text-decoration:none;
   transition:border-color var(--oe-dur-base) var(--oe-ease)}
 .path:hover,.path:focus-visible{border-color:var(--oe-accent)}
@@ -67,8 +77,8 @@ strong{font-weight:600;color:var(--oe-fg)}
 @media (max-width:1199.98px){ .indicators{grid-template-columns:repeat(3,minmax(0,1fr))} }
 @media (max-width:899.98px){ .steps,.paths{grid-template-columns:1fr} .indicators{grid-template-columns:repeat(2,minmax(0,1fr))} }
 @media (max-width:767.98px){ .band{padding:var(--oe-space-2xl) 0} .lead{font-size:19px} }
-@media (max-width:540px){ .indicators,.oe-kpis--3{grid-template-columns:1fr} .deep a{flex-direction:column;gap:4px} }
-@media print{ .oe-cta,.oe-hero-analisi__cue{display:none} }
+@media (max-width:540px){ .indicators{grid-template-columns:1fr} .deep a{flex-direction:column;gap:4px} }
+@media print{ .banner .oe-btn,.oe-hero-analisi__cue{display:none} }
 </style>
 </head>
 <body>
@@ -131,21 +141,21 @@ strong{font-weight:600;color:var(--oe-fg)}
       si propaga nella SAM e viene letta su cinque indicatori confrontabili. Quando la
       domanda è la convenienza, il percorso prosegue: prezzi ombra, analisi
       costi-benefici, ritorno sociale.</p>
+    <div class="hero-stats">
+      <div><div class="oe-stat__num">02</div><div class="oe-stat__label">Percorsi</div></div>
+      <div><div class="oe-stat__num">06</div><div class="oe-stat__label">Fasi verificabili</div></div>
+      <div><div class="oe-stat__num">05</div><div class="oe-stat__label">Indicatori macro</div></div>
+    </div>
   </div>
   <p class="oe-hero-analisi__cue" aria-hidden="true">Scorri<span></span></p>
 </section>
 
 <!-- ============================================================ DUE PERCORSI
-     La mappa della pagina: tre numeri, poi i due percorsi con le loro fasi.
+     Striscia con la mappa della pagina: i due percorsi con le loro fasi.
      Ogni percorso porta alla sua sezione. -->
 <section class="band band--tight" id="due-percorsi">
   <div class="oe-container">
     <span class="oe-tag-chip oe-tag-chip--lime">Due percorsi complementari</span>
-    <div class="oe-kpis oe-kpis--3">
-      <div class="oe-kpi"><div class="oe-kpi__value oe-num">02</div><div class="oe-kpi__label">Percorsi</div></div>
-      <div class="oe-kpi"><div class="oe-kpi__value oe-num">06</div><div class="oe-kpi__label">Fasi verificabili</div></div>
-      <div class="oe-kpi"><div class="oe-kpi__value oe-num">05</div><div class="oe-kpi__label">Indicatori macro</div></div>
-    </div>
     <div class="paths">
       <a class="path" href="#percorso-1">
         <span class="path__label">Percorso 01 — Analisi d'impatto · SAM</span>
@@ -199,7 +209,12 @@ strong{font-weight:600;color:var(--oe-fg)}
           PIL, valore della produzione, redditi, occupazione e gettito fiscale.</p>
       </article>
     </div>
+  </div>
+</section>
 
+<!-- Percorso 1, seconda parte: i cinque indicatori in uscita dalla fase 03 (fascia bianca) -->
+<section class="band band--tight">
+  <div class="oe-container">
     <h3 class="sub">Cosa misuriamo in ogni analisi.</h3>
     <p>Lo stesso set di cinque indicatori permette di confrontare scenari, settori
       e orizzonti temporali differenti senza ambiguità interpretative.</p>
@@ -240,20 +255,18 @@ strong{font-weight:600;color:var(--oe-fg)}
         <p class="ind__formula">Gettito = Imp. dir. + IVA + Contributi</p>
       </article>
     </div>
+    <div class="banner">
+      <div>
+        <h3 class="banner__title">Quanto attiva un investimento nell'economia?</h3>
+        <p class="banner__meta">SAM · Shock · Effetti diretti, indiretti e indotti</p>
+      </div>
+      <a class="oe-btn oe-btn--inverse oe-btn--lg" href="https://studies.openeconomics.sites.oeapp.eu/metodologia/impatto/sam.html">Approfondisci</a>
+    </div>
   </div>
-</section>
-
-<!-- Approfondisci: CTA del DS, porta alla pagina del modello SAM -->
-<section class="oe-cta">
-  <div>
-    <h2 class="oe-cta__title">Quanto attiva un investimento nell'economia?</h2>
-    <p class="oe-cta__text">SAM · Shock · Effetti diretti, indiretti e indotti</p>
-  </div>
-  <a class="oe-btn oe-btn--inverse oe-btn--lg" href="https://studies.openeconomics.sites.oeapp.eu/metodologia/impatto/sam.html">Approfondisci</a>
 </section>
 
 <!-- ============================================================ PERCORSO 2 -->
-<section class="band" id="percorso-2">
+<section class="band band--elev" id="percorso-2">
   <div class="oe-container">
     <span class="oe-tag-chip oe-tag-chip--lime">Percorso 2 — Valutazione ACB e SROI</span>
     <h2>Dai numeri al giudizio: ACB &amp; SROI.</h2>
@@ -283,22 +296,20 @@ strong{font-weight:600;color:var(--oe-fg)}
           esprime il valore sociale generato per ogni euro investito.</p>
       </article>
     </div>
+    <div class="banner">
+      <div>
+        <h3 class="banner__title">Quanto vale per la società e gli stakeholder?</h3>
+        <p class="banner__meta">Costi-benefici · Prezzi ombra · Valore sociale</p>
+      </div>
+      <a class="oe-btn oe-btn--inverse oe-btn--lg" href="https://studies.openeconomics.sites.oeapp.eu/metodologia/sociale/sroi-acb.html">Approfondisci</a>
+    </div>
   </div>
-</section>
-
-<!-- Approfondisci: CTA del DS, porta alla pagina ACB & SROI -->
-<section class="oe-cta">
-  <div>
-    <h2 class="oe-cta__title">Quanto vale per la società e gli stakeholder?</h2>
-    <p class="oe-cta__text">Costi-benefici · Prezzi ombra · Valore sociale</p>
-  </div>
-  <a class="oe-btn oe-btn--inverse oe-btn--lg" href="https://studies.openeconomics.sites.oeapp.eu/metodologia/sociale/sroi-acb.html">Approfondisci</a>
 </section>
 
 <!-- ============================================================ APPROFONDIMENTI
      Le card grandi dell'originale tolte (appunti 27/10): restano i link alle pagine di
      dettaglio, compresa quella del confronto 2019–2022 che prima stava solo nel menu. -->
-<section class="band band--elev" id="approfondimenti">
+<section class="band" id="approfondimenti">
   <div class="oe-container">
     <span class="oe-tag-chip oe-tag-chip--lime">Approfondimenti</span>
     <h2>Il metodo, passo per passo.</h2>
