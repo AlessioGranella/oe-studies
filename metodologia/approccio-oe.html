@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>L'approccio OpenEconomics — Metodologia · OpenEconomics</title>
+<meta name="description" content="Il protocollo comune a ogni studio OpenEconomics: analisi d'impatto con la SAM su cinque indicatori, poi analisi costi-benefici e SROI.">
+<link rel="icon" href="../media/icons/favicon-black.png" type="image/png">
+<link rel="stylesheet" href="../ds-kit/colors_and_type.css">
+<link rel="stylesheet" href="../ds-kit/components.css">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;overflow-x:hidden;background:var(--oe-bg);color:var(--oe-fg);
+  font-family:var(--oe-font-sans);font-weight:300;font-size:18px;line-height:1.5}
+img,svg{max-width:100%}
+
+/* ---- fasce: bianco e grigio alternati (regola delle landing di studio) ---- */
+.band{padding:var(--oe-space-3xl) 0}
+.band--tight{padding:var(--oe-space-2xl) 0}
+.band--elev{background:var(--oe-bg-elev)}
+.band .oe-tag-chip--lime{margin-bottom:var(--oe-space-s)}
+
+/* ---- testo ---- */
+h2{margin:0 0 var(--oe-space-m);max-width:none;text-wrap:balance}
+h3.sub{font-family:var(--oe-font-sans);font-weight:600;font-size:20px;line-height:1.3;margin:var(--oe-space-3xl) 0 var(--oe-space-xs)}
+h4{font-family:var(--oe-font-sans);font-weight:600;font-size:18px;line-height:1.3;margin:0}
+p{margin:0 0 var(--oe-space-s);color:var(--oe-fg-soft);max-width:none;text-wrap:pretty;font-size:18px;line-height:1.5}
+.lead{font-size:21px}
+strong{font-weight:600;color:var(--oe-fg)}
+
+/* ---- due percorsi ---- */
+.paths{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--oe-space-s);margin-top:var(--oe-space-s)}
+.path{display:block;border:1px solid var(--oe-gray-200);padding:var(--oe-space-m);color:inherit;text-decoration:none;
+  transition:border-color var(--oe-dur-base) var(--oe-ease)}
+.path:hover,.path:focus-visible{border-color:var(--oe-accent)}
+.path__label{display:block;font-family:var(--oe-font-mono);font-size:13px;font-weight:500;text-transform:uppercase;
+  letter-spacing:.04em;color:var(--oe-accent);margin-bottom:var(--oe-space-s)}
+.path__steps{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:var(--oe-space-xs) var(--oe-space-l)}
+.path__steps li{font-size:17px;color:var(--oe-fg)}
+.path__steps b{font-family:var(--oe-font-mono);font-weight:500;font-size:13px;color:var(--oe-accent);margin-right:6px}
+
+/* ---- fasi ---- */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--oe-space-s);margin-top:var(--oe-space-xl)}
+.step__head{display:flex;justify-content:space-between;align-items:flex-start}
+.step__head img{width:48px;height:48px;display:block}
+.step__num{font-family:var(--oe-font-serif);font-size:32px;line-height:1;color:var(--oe-accent)}
+.oe-card__body{font-size:16px}
+
+/* ---- indicatori ---- */
+.indicators{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--oe-space-s);margin-top:var(--oe-space-l)}
+.ind img{width:40px;height:40px;display:block}
+.ind__formula{margin:auto 0 0;padding-top:var(--oe-space-s);border-top:1px solid var(--oe-gray-200);
+  font-family:var(--oe-font-mono);font-size:13px;color:var(--oe-fg)}
+
+/* ---- approfondimenti ---- */
+.deep{list-style:none;margin:var(--oe-space-xl) 0 0;padding:0;border-top:1px solid var(--oe-gray-300)}
+.deep li{border-bottom:1px solid var(--oe-gray-300)}
+.deep a{display:flex;justify-content:space-between;align-items:baseline;gap:var(--oe-space-m);
+  padding:var(--oe-space-m) 0;color:var(--oe-fg);text-decoration:none;font-size:20px;font-weight:500}
+.deep a:hover span:first-child,.deep a:focus-visible span:first-child{color:var(--oe-accent)}
+.deep__meta{font-family:var(--oe-font-mono);font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:.04em;color:var(--oe-fg-soft)}
+.close{display:flex;justify-content:space-between;align-items:center;gap:var(--oe-space-l);flex-wrap:wrap;margin-top:var(--oe-space-2xl)}
+.close p{margin:0;flex:1 1 480px}
+
+@media (max-width:1199.98px){ .indicators{grid-template-columns:repeat(3,minmax(0,1fr))} }
+@media (max-width:899.98px){ .steps,.paths{grid-template-columns:1fr} .indicators{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:767.98px){ .band{padding:var(--oe-space-2xl) 0} .lead{font-size:19px} }
+@media (max-width:540px){ .indicators,.oe-kpis--3{grid-template-columns:1fr} .deep a{flex-direction:column;gap:4px} }
+@media print{ .oe-cta,.oe-hero-analisi__cue{display:none} }
+</style>
+</head>
+<body>
+
+<!-- ============================================================ 1 · NAVIGAZIONE
+     UI Block «Navigazione Analisi» del DS, stessa impostazione della barra della home
+     Studies: pannello sospeso sopra la hero. Riquadro bianco con logo OpenEconomics
+     (link al sito) + «Studies» a sinistra, «Torna agli studi» a destra. -->
+<header class="oe-nav-analisi">
+  <div class="oe-container">
+    <div class="oe-nav-analisi__inner">
+      <div class="oe-nav-analisi__brand">
+        <a class="oe-logo-link" href="https://www.openeconomics.eu" target="_blank" rel="noopener"><svg class="oe-nav-analisi__logo" viewBox="0 0 1789 226" fill="currentColor" role="img" aria-label="OpenEconomics" xmlns="http://www.w3.org/2000/svg"     > <path d="M90.6,9.5c-49,0-88.7,39.8-88.7,89c0,49.1,39.7,89,88.7,89s88.7-39.8,88.7-89C179.3,49.3,139.6,9.5,90.6,9.5z M38.2,151V46h104.6v105H38.2z" /> <path d="M199.5,226V57H221l5.6,19.3c2.6-4.6,5.9-8.6,10-11.8c4.1-3.3,8.7-5.7,13.8-7.4s10.7-2.6,16.6-2.6c10.1,0,19.3,2.7,27.6,8c8.4,5.3,15,12.9,20,22.9c4.9,9.9,7.4,21.8,7.4,35.7s-2.5,25.9-7.4,36c-4.9,9.9-11.6,17.6-20,22.9c-8.4,5.1-17.6,7.7-27.6,7.7c-6,0-11.5-0.9-16.6-2.6c-5.1-1.7-9.7-4.2-13.8-7.4c-4.1-3.4-7.4-7.4-10-12.1V226H199.5z M259.1,165.1c9.9,0,17.9-3.9,24-11.6c6.3-7.7,9.5-18.6,9.5-32.6s-3.2-24.9-9.5-32.6c-6.1-7.7-14.2-11.6-24-11.6c-9.9,0-18,3.7-24.3,11c-6.1,7.4-9.2,18.3-9.2,32.9c0,14.4,3.1,25.4,9.2,33.1C241.1,161.4,249.2,165.1,259.1,165.1z" /> <path d="M399.1,187.5c-13.5,0-25.1-2.8-34.8-8.5c-9.6-5.8-17-13.7-22.3-23.6c-5.1-10.1-7.7-21.7-7.7-34.7c0-13.5,2.8-25.3,8.4-35.2c5.8-9.9,13.5-17.6,23-22.9c9.7-5.5,20.6-8.2,32.5-8.2c10.1,0,19,2,26.9,5.9c8,3.9,14.7,9.3,20,16.2c5.3,6.8,9.1,14.7,11.5,23.6c2.4,8.7,3.2,18.1,2.6,28H362c0.9,7,2.6,12.9,5.1,17.7c2.6,4.8,5.5,8.6,9,11.3c3.6,2.7,7.3,4.7,11.3,5.9c4.1,1.2,7.9,1.8,11.5,1.8c6.7,0,12.3-1,16.9-3.1c4.8-2.2,8.5-5.1,11.3-8.5l24,7.7c-5.1,8.2-12.2,14.7-21.2,19.5C420.8,185.2,410.5,187.5,399.1,187.5z M362.3,108.6h69.8c-0.2-5.8-1.7-11.1-4.6-15.9c-2.7-5-6.6-8.9-11.5-11.8c-4.9-3.1-10.7-4.6-17.4-4.6c-5.3,0-10.6,1-15.9,3.1c-5.1,2.1-9.6,5.5-13.3,10.3C365.8,94.2,363.5,100.6,362.3,108.6z" /> <path d="M477.9,184.4V57h21.7l5.4,18.5c2.2-3.8,5.1-7.2,8.7-10.3c3.8-3.3,8.2-5.8,13.3-7.7c5.3-2.1,11.4-3.1,18.4-3.1c10.4,0,18.7,2.1,24.8,6.2s10.6,9.9,13.3,17.5c2.7,7.5,4.1,16.4,4.1,26.7v79.6h-27.4v-72.2c0-6.3-0.5-12.2-1.5-17.5c-1-5.5-3.3-9.8-6.9-13.1c-3.4-3.3-9-4.9-16.6-4.9c-9.6,0-17,3.4-22.3,10.3c-5.3,6.7-7.9,16.5-7.9,29.5v67.8L477.9,184.4L477.9,184.4z" /> <path d="M645.3,158.7V112h-25.9v72.5H737v-25.7h-91.7V158.7z M736.1,38.3V12.6H619.4v71.9h25.9V38.3H736.1z M714.6,84.5h-69.3V112h69.3V84.5z" /> <path d="M808.6,187.5c-12.8,0-23.8-2.8-33-8.5c-9-5.8-16-13.7-21-23.6c-4.8-10.1-7.2-21.7-7.2-34.7c0-12.8,2.6-24.2,7.7-34.2c5.3-10.1,12.6-18,22-23.6c9.4-5.7,20.4-8.5,33-8.5c7.5,0,14.5,1.3,21,3.9c6.7,2.4,12.5,5.8,17.7,10.3c5.1,4.5,9.2,9.8,12.3,16.2l-23.8,8.7c-2.6-5.3-6.3-9.3-11.3-12.1c-4.8-2.9-10.1-4.4-16.1-4.4c-5.8,0-11.3,1.5-16.6,4.6c-5.1,3.1-9.3,7.8-12.5,14.1c-3.1,6.3-4.6,14.6-4.6,24.9c0,10.1,1.6,18.5,4.9,25.2c3.2,6.5,7.4,11.3,12.5,14.4c5.1,3.1,10.6,4.6,16.4,4.6c6.5,0,12-1.4,16.6-4.1c4.8-2.9,8.4-6.7,11-11.3l23.8,8.7c-3.6,6.2-8.1,11.5-13.6,15.9c-5.5,4.3-11.5,7.6-18.2,10C823,186.4,816,187.5,808.6,187.5z" /> <path d="M929.2,187.5c-7.8,0-15.5-1.3-23-3.9c-7.5-2.6-14.2-6.6-20.2-12.1s-10.8-12.4-14.6-20.8c-3.6-8.4-5.4-18.3-5.4-29.8s1.8-21.4,5.4-29.8c3.8-8.4,8.6-15.3,14.6-20.8s12.7-9.5,20.2-12.1s15.2-3.9,23-3.9s15.4,1.3,22.8,3.9c7.5,2.6,14.2,6.6,20.2,12.1s10.7,12.4,14.3,20.8c3.8,8.4,5.6,18.3,5.6,29.8s-1.9,21.4-5.6,29.8c-3.6,8.4-8.4,15.3-14.3,20.8c-6,5.5-12.7,9.5-20.2,12.1C944.7,186.2,937.1,187.5,929.2,187.5z M929.2,164.9c6,0,11.5-1.5,16.6-4.4c5.3-3.1,9.6-7.9,12.8-14.4s4.9-14.9,4.9-25.2s-1.6-18.6-4.9-24.9c-3.2-6.5-7.5-11.3-12.8-14.4c-5.1-3.1-10.7-4.6-16.6-4.6c-6,0-11.6,1.5-16.9,4.6c-5.3,3.1-9.6,7.9-12.8,14.4c-3.2,6.3-4.9,14.6-4.9,24.9s1.6,18.7,4.9,25.2c3.2,6.5,7.5,11.3,12.8,14.4C917.6,163.4,923.3,164.9,929.2,164.9z" /> <path d="M1012.3,184.4V57h21.8l5.4,18.5c2.2-3.8,5.1-7.2,8.7-10.3c3.8-3.3,8.2-5.8,13.3-7.7c5.3-2.1,11.4-3.1,18.4-3.1c10.4,0,18.7,2.1,24.8,6.2c6.1,4.1,10.6,9.9,13.3,17.5c2.7,7.5,4.1,16.4,4.1,26.7v79.6h-27.4v-72.2c0-6.3-0.5-12.2-1.5-17.5c-1-5.5-3.3-9.8-6.9-13.1c-3.4-3.3-8.9-4.9-16.6-4.9c-9.6,0-17,3.4-22.2,10.3c-5.3,6.7-7.9,16.5-7.9,29.5v67.8L1012.3,184.4L1012.3,184.4z" /> <path d="M1204.8,187.5c-7.8,0-15.5-1.3-23-3.9c-7.5-2.6-14.2-6.6-20.2-12.1s-10.8-12.4-14.6-20.8c-3.6-8.4-5.4-18.3-5.4-29.8s1.8-21.4,5.4-29.8c3.8-8.4,8.6-15.3,14.6-20.8s12.7-9.5,20.2-12.1s15.2-3.9,23-3.9s15.4,1.3,22.8,3.9c7.5,2.6,14.2,6.6,20.2,12.1s10.8,12.4,14.3,20.8c3.8,8.4,5.6,18.3,5.6,29.8s-1.9,21.4-5.6,29.8c-3.6,8.4-8.4,15.3-14.3,20.8c-6,5.5-12.7,9.5-20.2,12.1C1220.2,186.2,1212.6,187.5,1204.8,187.5z M1204.8,164.9c6,0,11.5-1.5,16.6-4.4c5.3-3.1,9.5-7.9,12.8-14.4c3.2-6.5,4.9-14.9,4.9-25.2s-1.6-18.6-4.9-24.9c-3.2-6.5-7.5-11.3-12.8-14.4c-5.1-3.1-10.7-4.6-16.6-4.6c-6,0-11.6,1.5-16.9,4.6s-9.6,7.9-12.8,14.4c-3.2,6.3-4.9,14.6-4.9,24.9s1.6,18.7,4.9,25.2c3.2,6.5,7.5,11.3,12.8,14.4C1193.2,163.4,1198.8,164.9,1204.8,164.9z" /> <path d="M1287.8,184.4V57h21.8l5.4,18.5c2.2-3.8,5-7.2,8.4-10.3c3.6-3.3,7.8-5.8,12.8-7.7c4.9-2.1,10.6-3.1,16.9-3.1c9.9,0,17.8,2,23.8,5.9c6,3.8,10.4,9.2,13.3,16.2c4.9-7.7,11.1-13.3,18.4-16.7c7.5-3.6,15.7-5.4,24.6-5.4c10.2,0,18.3,2.1,24.3,6.2s10.3,9.9,13,17.5s4.1,16.4,4.1,26.7v79.6h-27.1v-72.2c0-6.3-0.6-12.2-1.8-17.5c-1-5.5-3.3-9.8-6.9-13.1c-3.4-3.3-8.8-4.9-16.1-4.9c-8.7,0-15.5,3.3-20.5,10c-4.9,6.5-7.4,16.2-7.4,29v68.6h-27.1v-72.2c0-6.3-0.6-12.2-1.8-17.5c-1-5.5-3.2-9.8-6.7-13.1c-3.4-3.3-8.8-4.9-16.1-4.9c-5.8,0-10.8,1.5-15.1,4.6c-4.3,2.9-7.5,7.4-9.7,13.4c-2.2,5.8-3.3,12.9-3.3,21.3v68.3h-27.2V184.4z" /> <path d="M1510,184.4V78.3h-18.9V57h46.3v127.4H1510z" /> <path d="M1505.9,1h31.7v31.8h-31.7V1z" /> <path d="M1619.1,187.5c-12.8,0-23.8-2.8-33-8.5c-9-5.8-16-13.7-21-23.6c-4.8-10.1-7.2-21.7-7.2-34.7c0-12.8,2.6-24.2,7.7-34.2c5.3-10.1,12.6-18,22-23.6c9.4-5.7,20.4-8.5,33-8.5c7.5,0,14.5,1.3,21,3.9c6.7,2.4,12.5,5.8,17.7,10.3c5.1,4.5,9.2,9.8,12.3,16.2l-23.8,8.7c-2.6-5.3-6.3-9.3-11.3-12.1c-4.8-2.9-10.2-4.4-16.1-4.4c-5.8,0-11.3,1.5-16.6,4.6c-5.1,3.1-9.3,7.8-12.5,14.1c-3.1,6.3-4.6,14.6-4.6,24.9c0,10.1,1.6,18.5,4.9,25.2c3.2,6.5,7.4,11.3,12.5,14.4s10.6,4.6,16.4,4.6c6.5,0,12-1.4,16.6-4.1c4.8-2.9,8.4-6.7,11-11.3l23.8,8.7c-3.6,6.2-8.1,11.5-13.6,15.9c-5.4,4.3-11.5,7.6-18.2,10C1633.4,186.4,1626.4,187.5,1619.1,187.5z" /> <path d="M1734.2,187.5c-8.2,0-16.1-1.2-23.8-3.6c-7.5-2.4-14.1-5.9-19.9-10.5c-5.6-4.8-9.9-10.8-12.8-18l24.8-9c1.7,6.3,5.7,11.2,12,14.6c6.3,3.4,13,5.1,19.9,5.1c7.7,0,14.2-1.5,19.7-4.6c5.5-3.3,8.2-7.5,8.2-12.8c0-4.6-2-8.2-5.9-10.8s-10.2-4.7-18.9-6.4l-17.1-3.6c-7.5-1.5-14.2-3.8-20.2-6.7c-5.8-2.9-10.4-6.8-13.8-11.6c-3.2-4.8-4.9-10.8-4.9-18c0-7.9,2.4-14.6,7.2-20.3c4.8-5.7,11.1-9.9,18.9-12.8c8-2.9,16.6-4.4,25.8-4.4c11.1,0,21.4,2.2,30.9,6.7c9.6,4.3,16.5,11.2,20.7,20.8l-24.3,9c-2.2-5-6-8.7-11.3-11.3c-5.1-2.6-10.9-3.9-17.4-3.9c-7.2,0-13,1.4-17.4,4.1s-6.7,6.4-6.7,11c0,4.1,1.5,7.3,4.6,9.5c3.2,2.1,8.3,3.9,15.1,5.4l17.4,3.6c9.2,1.9,17.1,4.3,23.5,7.2c6.6,2.9,11.7,6.8,15.1,11.8c3.4,4.8,5.1,11.1,5.1,19c0,8.4-2.5,15.7-7.4,21.8c-4.9,6-11.5,10.6-19.7,13.9C1753.7,185.9,1744.5,187.5,1734.2,187.5z" />    </svg></a>
+        <span class="oe-nav-analisi__badge">Studies</span>
+      </div>
+      <a class="oe-nav-analisi__link" href="https://studies.openeconomics.sites.oeapp.eu/">Torna agli studi</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================ 1b · MENU DELLE SEZIONI
+     Riquadro grigio attaccato sotto la barra bianca. Una voce per ogni sezione con il chip lime,
+     stesso testo del chip, nello stesso ordine; ogni voce è un'ancora all'id della sezione.
+     Le voci vanno a capo se non stanno in una riga; su mobile si aprono dall'hamburger.
+     Resta agganciato in alto; voce attiva e hamburger li gestisce ds-kit/oe-nav-sezioni.js. -->
+<nav class="oe-nav-sezioni" aria-label="Sezioni della pagina">
+  <div class="oe-container">
+    <div class="oe-nav-sezioni__inner">
+      <!-- su mobile la lista si chiude dietro l'hamburger; il testo diventa la sezione in vista -->
+      <button class="oe-nav-sezioni__toggle" type="button" aria-expanded="false" aria-controls="oe-nav-sezioni-lista">
+        <span class="oe-nav-sezioni__current">Sezioni</span>
+        <span class="oe-nav-sezioni__burger" aria-hidden="true"></span>
+      </button>
+      <ul class="oe-nav-sezioni__list" id="oe-nav-sezioni-lista">
+        <li><a class="oe-nav-sezioni__link" href="#due-percorsi">Due percorsi complementari</a></li>
+        <li><a class="oe-nav-sezioni__link" href="#percorso-1">Percorso 1 — Analisi d'impatto · SAM</a></li>
+        <li><a class="oe-nav-sezioni__link" href="#percorso-2">Percorso 2 — Valutazione ACB e SROI</a></li>
+        <li><a class="oe-nav-sezioni__link" href="#approfondimenti">Approfondimenti</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================ HERO
+     Hero Analisi del DS senza immagine: resta il fondo Bluette scuro.
+     Niente indicatori: il set chiuso del DS descrive uno studio, non la metodologia. -->
+<section class="oe-hero-analisi">
+  <div class="oe-container">
+    <div class="oe-hero-analisi__top">
+      <span class="oe-tag-chip oe-tag-chip--lime">L'approccio OpenEconomics</span>
+    </div>
+    <h1 class="oe-hero-analisi__title">Dal mondo reale ai numeri, dai numeri al giudizio.</h1>
+    <p class="oe-hero-analisi__sub">Ogni analisi d'impatto segue lo stesso protocollo: una variazione esogena di spesa
+      si propaga nella SAM e viene letta su cinque indicatori confrontabili. Quando la
+      domanda è la convenienza, il percorso prosegue: prezzi ombra, analisi
+      costi-benefici, ritorno sociale.</p>
+  </div>
+  <p class="oe-hero-analisi__cue" aria-hidden="true">Scorri<span></span></p>
+</section>
+
+<!-- ============================================================ DUE PERCORSI
+     La mappa della pagina: tre numeri, poi i due percorsi con le loro fasi.
+     Ogni percorso porta alla sua sezione. -->
+<section class="band band--tight" id="due-percorsi">
+  <div class="oe-container">
+    <span class="oe-tag-chip oe-tag-chip--lime">Due percorsi complementari</span>
+    <div class="oe-kpis oe-kpis--3">
+      <div class="oe-kpi"><div class="oe-kpi__value oe-num">02</div><div class="oe-kpi__label">Percorsi</div></div>
+      <div class="oe-kpi"><div class="oe-kpi__value oe-num">06</div><div class="oe-kpi__label">Fasi verificabili</div></div>
+      <div class="oe-kpi"><div class="oe-kpi__value oe-num">05</div><div class="oe-kpi__label">Indicatori macro</div></div>
+    </div>
+    <div class="paths">
+      <a class="path" href="#percorso-1">
+        <span class="path__label">Percorso 01 — Analisi d'impatto · SAM</span>
+        <ol class="path__steps">
+          <li><b>01</b> Shock di domanda</li>
+          <li><b>02</b> Propagazione SAM</li>
+          <li><b>03</b> 5 indicatori</li>
+        </ol>
+      </a>
+      <a class="path" href="#percorso-2">
+        <span class="path__label">Percorso 02 — Valutazione · ACB &amp; SROI</span>
+        <ol class="path__steps">
+          <li><b>04</b> Prezzi ombra</li>
+          <li><b>05</b> Costi-benefici</li>
+          <li><b>06</b> Ritorno sociale</li>
+        </ol>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ PERCORSO 1
+     Le tre fasi, poi i cinque indicatori che escono dalla fase 03. -->
+<section class="band band--elev" id="percorso-1">
+  <div class="oe-container">
+    <span class="oe-tag-chip oe-tag-chip--lime">Percorso 1 — Analisi d'impatto · SAM</span>
+    <h2>Quanto attiva un investimento nell'economia.</h2>
+    <p class="lead">Tre fasi, sempre le stesse: dall'impulso iniziale di spesa alla lettura
+      degli effetti su tutta l'economia.</p>
+    <div class="steps">
+      <article class="oe-card step">
+        <div class="step__head"><img src="../media/icons/ds/spesa.svg" alt=""><span class="step__num">01</span></div>
+        <h3 class="oe-card__title">Shock di domanda</h3>
+        <p class="oe-card__body">Si identifica la variazione esogena della domanda finale innescata dall'evento:
+          spesa aggiuntiva o mancata, investimenti, commesse, consumi o acquisti pubblici.
+          Questo impulso iniziale entra nel modello come shock.</p>
+      </article>
+      <article class="oe-card step">
+        <div class="step__head"><img src="../media/icons/ds/analisi-impatto-1.svg" alt=""><span class="step__num">02</span></div>
+        <h3 class="oe-card__title">Propagazione nella SAM</h3>
+        <p class="oe-card__body">La matrice di Leontief propaga lo shock lungo la struttura produttiva e i circuiti
+          di reddito. La domanda attiva i settori coinvolti, la filiera dei fornitori
+          e i ritorni verso famiglie e sistema pubblico, generando effetti diretti,
+          indiretti e indotti.</p>
+      </article>
+      <article class="oe-card step">
+        <div class="step__head"><img src="../media/icons/ds/metriche-1.svg" alt=""><span class="step__num">03</span></div>
+        <h3 class="oe-card__title">Valutazione d'impatto</h3>
+        <p class="oe-card__body">Gli impatti settoriali vengono tradotti in valori assoluti e letti su
+          <strong>cinque indicatori complementari</strong>:
+          PIL, valore della produzione, redditi, occupazione e gettito fiscale.</p>
+      </article>
+    </div>
+
+    <h3 class="sub">Cosa misuriamo in ogni analisi.</h3>
+    <p>Lo stesso set di cinque indicatori permette di confrontare scenari, settori
+      e orizzonti temporali differenti senza ambiguità interpretative.</p>
+    <div class="indicators">
+      <article class="oe-card ind">
+        <img src="../media/icons/ds/pil.svg" alt="">
+        <h4>Prodotto Interno Lordo</h4>
+        <p class="oe-card__body">Il valore aggiunto complessivo generato. Misura la ricchezza effettivamente
+          creata, evitando le duplicazioni del solo output lordo.</p>
+        <p class="ind__formula">VA = Output - Consumi intermedi</p>
+      </article>
+      <article class="oe-card ind">
+        <img src="../media/icons/ds/valore-della-produzione.svg" alt="">
+        <h4>Valore della Produzione</h4>
+        <p class="oe-card__body">L'output lordo attivato lungo tutta la filiera, inclusi i passaggi intermedi.
+          Più ampio del PIL, descrive il volume totale di attività messa in moto.</p>
+        <p class="ind__formula">Output = Domanda finale + Intermedi</p>
+      </article>
+      <article class="oe-card ind">
+        <img src="../media/icons/ds/redditi-delle-famiglie.svg" alt="">
+        <h4>Redditi da lavoro</h4>
+        <p class="oe-card__body">Salari e redditi misti da lavoro autonomo. La quota di valore aggiunto
+          che si trasferisce alle persone, alimentando poi gli effetti indotti.</p>
+        <p class="ind__formula">Redditi = Salari + Redditi misti</p>
+      </article>
+      <article class="oe-card ind">
+        <img src="../media/icons/ds/occupati.svg" alt="">
+        <h4>Occupazione (ETP)</h4>
+        <p class="oe-card__body">Le unità equivalenti a tempo pieno (ETP) associate all'attivazione
+          economica. Derivate applicando i coefficienti lavoro/output delle tavole ISTAT.</p>
+        <p class="ind__formula">ETP = Output x coeff. lavoro/output</p>
+      </article>
+      <article class="oe-card ind">
+        <img src="../media/icons/ds/gettito-fiscale.svg" alt="">
+        <h4>Gettito Fiscale</h4>
+        <p class="oe-card__body">Le entrate aggiuntive per l'erario: imposte dirette, IVA, contributi
+          previdenziali e imposte indirette sulla produzione.</p>
+        <p class="ind__formula">Gettito = Imp. dir. + IVA + Contributi</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Approfondisci: CTA del DS, porta alla pagina del modello SAM -->
+<section class="oe-cta">
+  <div>
+    <h2 class="oe-cta__title">Quanto attiva un investimento nell'economia?</h2>
+    <p class="oe-cta__text">SAM · Shock · Effetti diretti, indiretti e indotti</p>
+  </div>
+  <a class="oe-btn oe-btn--inverse oe-btn--lg" href="impatto/sam.html">Approfondisci</a>
+</section>
+
+<!-- ============================================================ PERCORSO 2 -->
+<section class="band" id="percorso-2">
+  <div class="oe-container">
+    <span class="oe-tag-chip oe-tag-chip--lime">Percorso 2 — Valutazione ACB e SROI</span>
+    <h2>Dai numeri al giudizio: ACB &amp; SROI.</h2>
+    <p class="lead">L'impatto misura quanto si attiva; la valutazione stabilisce se ne vale la pena
+      e per chi. I fattori di conversione derivano dalla stessa SAM: il percorso
+      prosegue senza cambiare base dati.</p>
+    <div class="steps">
+      <article class="oe-card step">
+        <div class="step__head"><img src="../media/icons/ds/valutazione-1.svg" alt=""><span class="step__num">04</span></div>
+        <h3 class="oe-card__title">Prezzi ombra</h3>
+        <p class="oe-card__body">I flussi finanziari vengono corretti con i fattori di conversione derivati
+          dalla SAM: al netto di imposte e distorsioni, conta il costo-opportunità per
+          la collettività. Le esternalità ambientali e sociali entrano nel conto, monetizzate.</p>
+      </article>
+      <article class="oe-card step">
+        <div class="step__head"><img src="../media/icons/ds/analisi-costi-benefici-1.svg" alt=""><span class="step__num">05</span></div>
+        <h3 class="oe-card__title">Convenienza economica</h3>
+        <p class="oe-card__body">Benefici e costi, attualizzati al tasso sociale di sconto, si sintetizzano in
+          <strong>tre misure: VANE, TIRE e rapporto B/C</strong>.
+          L'analisi di rischio e sensitività ne verifica la robustezza.</p>
+      </article>
+      <article class="oe-card step">
+        <div class="step__head"><img src="../media/icons/ds/roi-1.svg" alt=""><span class="step__num">06</span></div>
+        <h3 class="oe-card__title">Ritorno sociale</h3>
+        <p class="oe-card__body">Gli outcome per gli stakeholder vengono monetizzati con proxy finanziarie, al
+          netto di effetti inerziali e attribuzione: il <strong>rapporto SROI</strong>
+          esprime il valore sociale generato per ogni euro investito.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Approfondisci: CTA del DS, porta alla pagina ACB & SROI -->
+<section class="oe-cta">
+  <div>
+    <h2 class="oe-cta__title">Quanto vale per la società e gli stakeholder?</h2>
+    <p class="oe-cta__text">Costi-benefici · Prezzi ombra · Valore sociale</p>
+  </div>
+  <a class="oe-btn oe-btn--inverse oe-btn--lg" href="sociale/sroi-acb.html">Approfondisci</a>
+</section>
+
+<!-- ============================================================ APPROFONDIMENTI
+     Le card grandi dell'originale tolte (appunti 27/10): restano i link alle pagine di
+     dettaglio, compresa quella del confronto 2019–2022 che prima stava solo nel menu. -->
+<section class="band band--elev" id="approfondimenti">
+  <div class="oe-container">
+    <span class="oe-tag-chip oe-tag-chip--lime">Approfondimenti</span>
+    <h2>Il metodo, passo per passo.</h2>
+    <p class="lead">Due pagine dedicate entrano nel dettaglio: il modello SAM con i suoi
+      moltiplicatori; fattori di conversione, tasso sociale di sconto,
+      principi e proxy dello SROI.</p>
+    <ul class="deep">
+      <li><a href="impatto/sam.html"><span>Modello SAM</span><span class="deep__meta">Analisi d'impatto</span></a></li>
+      <li><a href="impatto/sam_2019_2022.html"><span>Confronto 2019–2022</span><span class="deep__meta">Analisi d'impatto</span></a></li>
+      <li><a href="sociale/sroi-acb.html"><span>ACB &amp; SROI</span><span class="deep__meta">Valutazione</span></a></li>
+    </ul>
+    <div class="close">
+      <p>La metodologia è la stessa in ogni studio: gli stessi indicatori, la stessa base
+        dati, risultati confrontabili tra settori e territori.</p>
+      <a class="oe-btn oe-btn--primary oe-btn--md" href="../#report">Esplora gli studi</a>
+    </div>
+  </div>
+</section>
+
+<footer class="oe-footer oe-footer--analisi">
+  <div class="oe-footer__inner">
+    <div class="oe-footer__top">
+      <div class="oe-footer__brand">
+        <a class="oe-logo-link" href="https://www.openeconomics.eu" target="_blank" rel="noopener"><svg class="oe-footer__logo" viewBox="0 0 1789 226" fill="currentColor" role="img" aria-label="OpenEconomics" xmlns="http://www.w3.org/2000/svg"><path d="M90.6,9.5c-49,0-88.7,39.8-88.7,89c0,49.1,39.7,89,88.7,89s88.7-39.8,88.7-89C179.3,49.3,139.6,9.5,90.6,9.5z M38.2,151V46h104.6v105H38.2z" /><path d="M199.5,226V57H221l5.6,19.3c2.6-4.6,5.9-8.6,10-11.8c4.1-3.3,8.7-5.7,13.8-7.4s10.7-2.6,16.6-2.6c10.1,0,19.3,2.7,27.6,8c8.4,5.3,15,12.9,20,22.9c4.9,9.9,7.4,21.8,7.4,35.7s-2.5,25.9-7.4,36c-4.9,9.9-11.6,17.6-20,22.9c-8.4,5.1-17.6,7.7-27.6,7.7c-6,0-11.5-0.9-16.6-2.6c-5.1-1.7-9.7-4.2-13.8-7.4c-4.1-3.4-7.4-7.4-10-12.1V226H199.5z M259.1,165.1c9.9,0,17.9-3.9,24-11.6c6.3-7.7,9.5-18.6,9.5-32.6s-3.2-24.9-9.5-32.6c-6.1-7.7-14.2-11.6-24-11.6c-9.9,0-18,3.7-24.3,11c-6.1,7.4-9.2,18.3-9.2,32.9c0,14.4,3.1,25.4,9.2,33.1C241.1,161.4,249.2,165.1,259.1,165.1z" /><path d="M399.1,187.5c-13.5,0-25.1-2.8-34.8-8.5c-9.6-5.8-17-13.7-22.3-23.6c-5.1-10.1-7.7-21.7-7.7-34.7c0-13.5,2.8-25.3,8.4-35.2c5.8-9.9,13.5-17.6,23-22.9c9.7-5.5,20.6-8.2,32.5-8.2c10.1,0,19,2,26.9,5.9c8,3.9,14.7,9.3,20,16.2c5.3,6.8,9.1,14.7,11.5,23.6c2.4,8.7,3.2,18.1,2.6,28H362c0.9,7,2.6,12.9,5.1,17.7c2.6,4.8,5.5,8.6,9,11.3c3.6,2.7,7.3,4.7,11.3,5.9c4.1,1.2,7.9,1.8,11.5,1.8c6.7,0,12.3-1,16.9-3.1c4.8-2.2,8.5-5.1,11.3-8.5l24,7.7c-5.1,8.2-12.2,14.7-21.2,19.5C420.8,185.2,410.5,187.5,399.1,187.5z M362.3,108.6h69.8c-0.2-5.8-1.7-11.1-4.6-15.9c-2.7-5-6.6-8.9-11.5-11.8c-4.9-3.1-10.7-4.6-17.4-4.6c-5.3,0-10.6,1-15.9,3.1c-5.1,2.1-9.6,5.5-13.3,10.3C365.8,94.2,363.5,100.6,362.3,108.6z" /><path d="M477.9,184.4V57h21.7l5.4,18.5c2.2-3.8,5.1-7.2,8.7-10.3c3.8-3.3,8.2-5.8,13.3-7.7c5.3-2.1,11.4-3.1,18.4-3.1c10.4,0,18.7,2.1,24.8,6.2s10.6,9.9,13.3,17.5c2.7,7.5,4.1,16.4,4.1,26.7v79.6h-27.4v-72.2c0-6.3-0.5-12.2-1.5-17.5c-1-5.5-3.3-9.8-6.9-13.1c-3.4-3.3-9-4.9-16.6-4.9c-9.6,0-17,3.4-22.3,10.3c-5.3,6.7-7.9,16.5-7.9,29.5v67.8L477.9,184.4L477.9,184.4z" /><path d="M645.3,158.7V112h-25.9v72.5H737v-25.7h-91.7V158.7z M736.1,38.3V12.6H619.4v71.9h25.9V38.3H736.1z M714.6,84.5h-69.3V112h69.3V84.5z" /><path d="M808.6,187.5c-12.8,0-23.8-2.8-33-8.5c-9-5.8-16-13.7-21-23.6c-4.8-10.1-7.2-21.7-7.2-34.7c0-12.8,2.6-24.2,7.7-34.2c5.3-10.1,12.6-18,22-23.6c9.4-5.7,20.4-8.5,33-8.5c7.5,0,14.5,1.3,21,3.9c6.7,2.4,12.5,5.8,17.7,10.3c5.1,4.5,9.2,9.8,12.3,16.2l-23.8,8.7c-2.6-5.3-6.3-9.3-11.3-12.1c-4.8-2.9-10.1-4.4-16.1-4.4c-5.8,0-11.3,1.5-16.6,4.6c-5.1,3.1-9.3,7.8-12.5,14.1c-3.1,6.3-4.6,14.6-4.6,24.9c0,10.1,1.6,18.5,4.9,25.2c3.2,6.5,7.4,11.3,12.5,14.4c5.1,3.1,10.6,4.6,16.4,4.6c6.5,0,12-1.4,16.6-4.1c4.8-2.9,8.4-6.7,11-11.3l23.8,8.7c-3.6,6.2-8.1,11.5-13.6,15.9c-5.5,4.3-11.5,7.6-18.2,10C823,186.4,816,187.5,808.6,187.5z" /><path d="M929.2,187.5c-7.8,0-15.5-1.3-23-3.9c-7.5-2.6-14.2-6.6-20.2-12.1s-10.8-12.4-14.6-20.8c-3.6-8.4-5.4-18.3-5.4-29.8s1.8-21.4,5.4-29.8c3.8-8.4,8.6-15.3,14.6-20.8s12.7-9.5,20.2-12.1s15.2-3.9,23-3.9s15.4,1.3,22.8,3.9c7.5,2.6,14.2,6.6,20.2,12.1s10.7,12.4,14.3,20.8c3.8,8.4,5.6,18.3,5.6,29.8s-1.9,21.4-5.6,29.8c-3.6,8.4-8.4,15.3-14.3,20.8c-6,5.5-12.7,9.5-20.2,12.1C944.7,186.2,937.1,187.5,929.2,187.5z M929.2,164.9c6,0,11.5-1.5,16.6-4.4c5.3-3.1,9.6-7.9,12.8-14.4s4.9-14.9,4.9-25.2s-1.6-18.6-4.9-24.9c-3.2-6.5-7.5-11.3-12.8-14.4c-5.1-3.1-10.7-4.6-16.6-4.6c-6,0-11.6,1.5-16.9,4.6c-5.3,3.1-9.6,7.9-12.8,14.4c-3.2,6.3-4.9,14.6-4.9,24.9s1.6,18.7,4.9,25.2c3.2,6.5,7.5,11.3,12.8,14.4C917.6,163.4,923.3,164.9,929.2,164.9z" /><path d="M1012.3,184.4V57h21.8l5.4,18.5c2.2-3.8,5.1-7.2,8.7-10.3c3.8-3.3,8.2-5.8,13.3-7.7c5.3-2.1,11.4-3.1,18.4-3.1c10.4,0,18.7,2.1,24.8,6.2c6.1,4.1,10.6,9.9,13.3,17.5c2.7,7.5,4.1,16.4,4.1,26.7v79.6h-27.4v-72.2c0-6.3-0.5-12.2-1.5-17.5c-1-5.5-3.3-9.8-6.9-13.1c-3.4-3.3-8.9-4.9-16.6-4.9c-9.6,0-17,3.4-22.2,10.3c-5.3,6.7-7.9,16.5-7.9,29.5v67.8L1012.3,184.4L1012.3,184.4z" /><path d="M1204.8,187.5c-7.8,0-15.5-1.3-23-3.9c-7.5-2.6-14.2-6.6-20.2-12.1s-10.8-12.4-14.6-20.8c-3.6-8.4-5.4-18.3-5.4-29.8s1.8-21.4,5.4-29.8c3.8-8.4,8.6-15.3,14.6-20.8s12.7-9.5,20.2-12.1s15.2-3.9,23-3.9s15.4,1.3,22.8,3.9c7.5,2.6,14.2,6.6,20.2,12.1s10.8,12.4,14.3,20.8c3.8,8.4,5.6,18.3,5.6,29.8s-1.9,21.4-5.6,29.8c-3.6,8.4-8.4,15.3-14.3,20.8c-6,5.5-12.7,9.5-20.2,12.1C1220.2,186.2,1212.6,187.5,1204.8,187.5z M1204.8,164.9c6,0,11.5-1.5,16.6-4.4c5.3-3.1,9.5-7.9,12.8-14.4c3.2-6.5,4.9-14.9,4.9-25.2s-1.6-18.6-4.9-24.9c-3.2-6.5-7.5-11.3-12.8-14.4c-5.1-3.1-10.7-4.6-16.6-4.6c-6,0-11.6,1.5-16.9,4.6s-9.6,7.9-12.8,14.4c-3.2,6.3-4.9,14.6-4.9,24.9s1.6,18.7,4.9,25.2c3.2,6.5,7.5,11.3,12.8,14.4C1193.2,163.4,1198.8,164.9,1204.8,164.9z" /><path d="M1287.8,184.4V57h21.8l5.4,18.5c2.2-3.8,5-7.2,8.4-10.3c3.6-3.3,7.8-5.8,12.8-7.7c4.9-2.1,10.6-3.1,16.9-3.1c9.9,0,17.8,2,23.8,5.9c6,3.8,10.4,9.2,13.3,16.2c4.9-7.7,11.1-13.3,18.4-16.7c7.5-3.6,15.7-5.4,24.6-5.4c10.2,0,18.3,2.1,24.3,6.2s10.3,9.9,13,17.5s4.1,16.4,4.1,26.7v79.6h-27.1v-72.2c0-6.3-0.6-12.2-1.8-17.5c-1-5.5-3.3-9.8-6.9-13.1c-3.4-3.3-8.8-4.9-16.1-4.9c-8.7,0-15.5,3.3-20.5,10c-4.9,6.5-7.4,16.2-7.4,29v68.6h-27.1v-72.2c0-6.3-0.6-12.2-1.8-17.5c-1-5.5-3.2-9.8-6.7-13.1c-3.4-3.3-8.8-4.9-16.1-4.9c-5.8,0-10.8,1.5-15.1,4.6c-4.3,2.9-7.5,7.4-9.7,13.4c-2.2,5.8-3.3,12.9-3.3,21.3v68.3h-27.2V184.4z" /><path d="M1510,184.4V78.3h-18.9V57h46.3v127.4H1510z" /><path d="M1505.9,1h31.7v31.8h-31.7V1z" /><path d="M1619.1,187.5c-12.8,0-23.8-2.8-33-8.5c-9-5.8-16-13.7-21-23.6c-4.8-10.1-7.2-21.7-7.2-34.7c0-12.8,2.6-24.2,7.7-34.2c5.3-10.1,12.6-18,22-23.6c9.4-5.7,20.4-8.5,33-8.5c7.5,0,14.5,1.3,21,3.9c6.7,2.4,12.5,5.8,17.7,10.3c5.1,4.5,9.2,9.8,12.3,16.2l-23.8,8.7c-2.6-5.3-6.3-9.3-11.3-12.1c-4.8-2.9-10.2-4.4-16.1-4.4c-5.8,0-11.3,1.5-16.6,4.6c-5.1,3.1-9.3,7.8-12.5,14.1c-3.1,6.3-4.6,14.6-4.6,24.9c0,10.1,1.6,18.5,4.9,25.2c3.2,6.5,7.4,11.3,12.5,14.4s10.6,4.6,16.4,4.6c6.5,0,12-1.4,16.6-4.1c4.8-2.9,8.4-6.7,11-11.3l23.8,8.7c-3.6,6.2-8.1,11.5-13.6,15.9c-5.4,4.3-11.5,7.6-18.2,10C1633.4,186.4,1626.4,187.5,1619.1,187.5z" /><path d="M1734.2,187.5c-8.2,0-16.1-1.2-23.8-3.6c-7.5-2.4-14.1-5.9-19.9-10.5c-5.6-4.8-9.9-10.8-12.8-18l24.8-9c1.7,6.3,5.7,11.2,12,14.6c6.3,3.4,13,5.1,19.9,5.1c7.7,0,14.2-1.5,19.7-4.6c5.5-3.3,8.2-7.5,8.2-12.8c0-4.6-2-8.2-5.9-10.8s-10.2-4.7-18.9-6.4l-17.1-3.6c-7.5-1.5-14.2-3.8-20.2-6.7c-5.8-2.9-10.4-6.8-13.8-11.6c-3.2-4.8-4.9-10.8-4.9-18c0-7.9,2.4-14.6,7.2-20.3c4.8-5.7,11.1-9.9,18.9-12.8c8-2.9,16.6-4.4,25.8-4.4c11.1,0,21.4,2.2,30.9,6.7c9.6,4.3,16.5,11.2,20.7,20.8l-24.3,9c-2.2-5-6-8.7-11.3-11.3c-5.1-2.6-10.9-3.9-17.4-3.9c-7.2,0-13,1.4-17.4,4.1s-6.7,6.4-6.7,11c0,4.1,1.5,7.3,4.6,9.5c3.2,2.1,8.3,3.9,15.1,5.4l17.4,3.6c9.2,1.9,17.1,4.3,23.5,7.2c6.6,2.9,11.7,6.8,15.1,11.8c3.4,4.8,5.1,11.1,5.1,19c0,8.4-2.5,15.7-7.4,21.8c-4.9,6-11.5,10.6-19.7,13.9C1753.7,185.9,1744.5,187.5,1734.2,187.5z" /></svg></a>
+        <p class="oe-footer__tagline">Enabling adaptation. Empowering impact. With platforms, strategy, and trust.</p>
+        <address class="oe-footer__hq">
+          <span class="oe-footer__hq-label">Headquarter</span>
+          <span class="oe-footer__hq-line">Via Vitorchiano, 123</span>
+          <span class="oe-footer__hq-line">00189 Roma (RM)</span>
+          <a class="oe-footer__hq-line oe-footer__link" href="tel:+39068414537">+39 068414537</a>
+        </address>
+      </div>
+      <div class="oe-footer__disclaimer">
+        <span class="oe-footer__disclaimer-label">Condizioni d'uso</span>
+        Il presente documento e tutte le informazioni in esso contenute possono essere divulgati, a condizione che la distribuzione avvenga citando OpenEconomics come fonte. Le informazioni sono fornite a scopo puramente informativo e non implicano alcuna garanzia o impegno da parte di OpenEconomics. Le analisi economiche contenute nel documento sono state elaborate sulla base di fonti pubbliche autorevoli e fornitori di dati specialistici, e sono state realizzate con l’obiettivo di offrire una valutazione professionale, oggettiva e prudenziale in linea con le prassi metodologiche di comparto. Al documento e ai suoi contenuti si applicano il copyright e le norme in materia di protezione dei dati personali.
+      </div>
+    </div>
+    <hr class="oe-footer__rule">
+    <div class="oe-footer__bottom">
+      <p class="oe-footer__meta">© 2026 OpenEconomics&nbsp;| Partita Iva 12504821005</p>
+      <nav class="oe-footer__links" aria-label="Note legali">
+        <a class="oe-footer__link" href="https://www.openeconomics.eu/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>
+        <a class="oe-footer__link" href="https://www.openeconomics.eu/cookie-policy" target="_blank" rel="noopener">Cookie Policy</a>
+        <a class="oe-footer__site" href="https://www.openeconomics.eu" target="_blank" rel="noopener">www.openeconomics.eu</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script src="../ds-kit/oe-nav-sezioni.js" defer></script>
+</body>
+</html>

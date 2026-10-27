@@ -1,0 +1,1155 @@
+/* =========================================================================
+   OpenEconomics — Stili dei componenti canonici
+   Dipende dai token in styles/colors_and_type.css
+   Spacing: SEMPRE via var(--oe-space-*) (scala 4px). Niente px hardcoded
+   per padding/gap/margin. Font-size e bordi seguono le rispettive scale.
+   ========================================================================= */
+
+/* ---- Button ------------------------------------------------------------ */
+.oe-btn {
+  font-family: var(--oe-font-sans);
+  font-weight: 500;
+  border: 1px solid transparent;
+  border-radius: var(--oe-radius-sm);   /* 0 = spigolo vivo */
+  cursor: pointer;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--oe-space-xs);               /* 8 */
+  transition: background var(--oe-dur-fast) var(--oe-ease),
+              color var(--oe-dur-fast) var(--oe-ease),
+              border-color var(--oe-dur-fast) var(--oe-ease);
+}
+.oe-btn--sm { font-size: 14px; padding: var(--oe-space-xs) var(--oe-space-s); }   /* 8 · 16 */
+.oe-btn--md { font-size: 16px; padding: var(--oe-space-3) var(--oe-space-5); }    /* 12 · 20 */
+.oe-btn--lg { font-size: 18px; padding: var(--oe-space-s) var(--oe-space-l); }    /* 16 · 32 */
+
+.oe-btn--primary { background: var(--oe-accent); color: var(--oe-accent-on); }
+.oe-btn--primary:hover { background: var(--oe-accent-strong); }
+
+.oe-btn--accent { background: var(--oe-pop); color: var(--oe-pop-on); }
+.oe-btn--accent:hover { background: var(--oe-pop-strong); }
+
+.oe-btn--secondary { background: transparent; color: var(--oe-accent); border-color: var(--oe-accent); }
+.oe-btn--secondary:hover { background: var(--oe-accent-soft); }
+
+.oe-btn--ghost { background: transparent; color: var(--oe-accent); }
+.oe-btn--ghost:hover { color: var(--oe-accent-strong); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---- Tag / Chip -------------------------------------------------------- */
+.oe-tag-chip {
+  font-family: var(--oe-font-mono);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  padding: var(--oe-space-xs) var(--oe-space-3);   /* 8 · 12 */
+  display: inline-block;
+  line-height: 1;
+}
+.oe-tag-chip--default { color: var(--oe-accent); border: 1px solid var(--oe-accent-border); }
+.oe-tag-chip--on-dark { color: var(--oe-on-dark-accent); border: 1px solid rgba(255,255,255,0.25); }
+.oe-tag-chip--lime    { color: var(--oe-pop-on); background: var(--oe-pop); }
+
+/* ---- Note / callout ----------------------------------------------------
+   Nota di lettura accanto a dati e grafici. Due varianti: lime piena e grigia
+   con filetto lime. Il filetto verticale è l'unica eccezione sanzionata alla
+   regola sui bordi laterali colorati (vale solo per questo componente). */
+.oe-note {
+  position: relative;
+  max-width: none;          /* è un pannello: non eredita il cap di riga dei paragrafi */
+  font-family: var(--oe-font-sans);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.55;
+  padding: var(--oe-space-m) var(--oe-space-l) var(--oe-space-m) var(--oe-space-xl);
+}
+.oe-note::before {
+  content: "";
+  position: absolute;
+  left: var(--oe-space-m); top: var(--oe-space-m); bottom: var(--oe-space-m);
+  width: 4px;
+}
+.oe-note p { margin: 0; max-width: none; }
+.oe-note p + p { margin-top: var(--oe-space-s); }
+.oe-note strong, .oe-note b { font-weight: 600; }
+
+/* REGOLA D'USO (v0.6.1): la nota IMPORTANTE è «evidente» (lime), quella non particolarmente
+   importante è «neutra» (grigia). Prima di impaginarla si chiede sempre quale delle due serve.
+   Su una fascia grigia la neutra va su bianco, per non sparire. */
+
+/* evidente — lime piena, filetto Bluette (bianco sotto Civiqa, dove il pop è già blu) */
+.oe-note--evidente, .oe-note--lime { background: var(--oe-pop); color: var(--oe-pop-on); }
+.oe-note--evidente::before, .oe-note--lime::before { background: var(--oe-pop-rule); }
+
+/* neutra — grigia con filetto lime */
+.oe-note--neutra, .oe-note--grey { background: var(--oe-bg-elev); color: var(--oe-fg); }
+.oe-note--neutra::before, .oe-note--grey::before { background: var(--oe-pop); }
+.oe-band--elev .oe-note--neutra, .oe-band--elev .oe-note--grey,
+.oe-band--nota .oe-note--neutra, .oe-band--nota .oe-note--grey { background: var(--oe-white); }
+
+/* ---- KPI Card ---------------------------------------------------------- */
+.oe-kpi { background: var(--oe-white); padding: var(--oe-space-m); border: 1px solid var(--oe-gray-200); }   /* 24 */
+.oe-kpi--dark { background: var(--oe-bg-dark); border-color: rgba(255,255,255,0.14); }
+/* tutte le card KPI reagiscono al passaggio del mouse e al focus */
+.oe-kpi {
+  cursor: default;
+  transition: background var(--oe-dur-fast) var(--oe-ease),
+              border-color var(--oe-dur-fast) var(--oe-ease),
+              color var(--oe-dur-fast) var(--oe-ease);
+}
+/* variante "flip": a riposo mostra il dato, al passaggio lo sostituisce con la
+   descrizione dentro la card stessa (niente tooltip fuori dal riquadro). */
+.oe-kpi--flip { position: relative; overflow: hidden; }
+.oe-kpi--flip > *:not(.oe-kpi__tip) {
+  transition: opacity var(--oe-dur-fast) var(--oe-ease);
+}
+.oe-kpi__tip {
+  position: absolute; inset: 0; margin: 0;
+  display: flex; align-items: center;
+  padding: var(--oe-space-m);
+  font-family: var(--oe-font-sans); font-weight: 300;
+  font-size: 13px; line-height: 1.45; color: var(--oe-white);
+  opacity: 0; visibility: hidden;
+  transition: opacity var(--oe-dur-fast) var(--oe-ease);
+}
+.oe-kpi--flip:hover > *:not(.oe-kpi__tip),
+.oe-kpi--flip:focus-visible > *:not(.oe-kpi__tip) { opacity: 0; }
+.oe-kpi--flip:hover .oe-kpi__tip,
+.oe-kpi--flip:focus-visible .oe-kpi__tip { opacity: 1; visibility: visible; }
+
+/* hover/focus: la card va in negativo su Bluette 900 */
+.oe-kpi:hover, .oe-kpi:focus-visible {
+  background: var(--oe-bg-dark);
+  border-color: var(--oe-bg-dark);
+  color: var(--oe-white);
+}
+.oe-kpi:hover .oe-kpi__value,
+.oe-kpi:focus-visible .oe-kpi__value,
+.oe-kpi:hover .oe-kpi__label,
+.oe-kpi:focus-visible .oe-kpi__label,
+.oe-kpi:hover .oe-kpi__unit,
+.oe-kpi:focus-visible .oe-kpi__unit,
+.oe-kpi:hover .oe-kpi__note,
+.oe-kpi:focus-visible .oe-kpi__note { color: var(--oe-white); }
+.oe-kpi__value {
+  font-family: var(--oe-font-serif);   /* numero display → Hedvig */
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  color: var(--oe-accent);
+}
+.oe-kpi--dark .oe-kpi__value { color: var(--oe-on-dark-accent); }
+.oe-kpi__affix { font-size: 0.5em; font-weight: 500; margin: 0 2px; }
+.oe-kpi__label {
+  font-family: var(--oe-font-mono);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-top: var(--oe-space-3);          /* 12 */
+  color: var(--oe-gray-700);
+}
+.oe-kpi--dark .oe-kpi__label { color: rgba(255,255,255,0.7); }
+.oe-kpi__icon { width: 36px; height: 36px; margin-bottom: var(--oe-space-s); color: var(--oe-accent); }
+.oe-kpi__icon img, .oe-kpi__icon svg { width: 100%; height: 100%; display: block; }
+.oe-kpi--dark .oe-kpi__icon { color: var(--oe-on-dark-accent); }
+/* variante "titolata": etichetta sopra, numero, unità — forma richiesta per le
+   landing di analisi (titolo → numero → valuta). */
+.oe-kpi--titled { display: flex; flex-direction: column; }
+.oe-kpi--titled .oe-kpi__label { order: -1; margin-top: 0; margin-bottom: var(--oe-space-xs); }
+.oe-kpi__unit {
+  font-family: var(--oe-font-mono); font-size: 13px; text-transform: uppercase;
+  letter-spacing: 0.02em; color: var(--oe-fg-soft); margin-top: var(--oe-space-xs);
+}
+.oe-kpi--dark .oe-kpi__unit { color: rgba(255,255,255,0.7); }
+
+.oe-kpi__note { font-family: var(--oe-font-sans); font-weight: 300; font-size: 13px; line-height: 1.45; color: var(--oe-fg-soft); margin: var(--oe-space-s) 0 0; }
+.oe-kpi--dark .oe-kpi__note { color: rgba(255,255,255,0.72); }
+
+/* Griglia delle card KPI (executive summary e sintesi di sezione).
+   Sei colonne, poi 3 · 2 · 1: le card si incolonnano sempre, non si schiacciano. */
+.oe-kpis { display: grid; grid-template-columns: repeat(6, 1fr); gap: var(--oe-space-s); }
+.oe-kpis--3 { grid-template-columns: repeat(3, 1fr); }
+.oe-kpis--2 { grid-template-columns: repeat(2, 1fr); }
+/* le etichette su due righe non devono sfalsare i numeri */
+.oe-kpis .oe-kpi--titled .oe-kpi__label { min-height: 2.6em; }
+/* la card che ospita la spiegazione al suo interno ha bisogno di un'altezza minima,
+   altrimenti la griglia balla quando il testo compare */
+.oe-kpis .oe-kpi--flip { min-height: 196px; }
+@media (max-width: 1199.98px) { .oe-kpis { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 899.98px)  { .oe-kpis--3 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)     { .oe-kpis { grid-template-columns: repeat(2, 1fr); }
+                                .oe-kpis--2 { grid-template-columns: 1fr; } }
+@media (max-width: 480px)     { .oe-kpis, .oe-kpis--3, .oe-kpis--2 { grid-template-columns: 1fr; }
+                                .oe-kpis .oe-kpi--flip { min-height: 150px; } }
+
+/* ---- Fasce di pagina ---------------------------------------------------
+   Le sezioni di una landing di analisi alternano bianco e grigio. Le uniche
+   eccezioni sono le fasce scure (hero, «consegnato») e la nota metodologica,
+   che ha sempre fondo bluette-050 e non entra nell'alternanza. */
+.oe-band { padding: var(--oe-space-3xl) 0; }
+.oe-band--tight { padding: var(--oe-space-2xl) 0; }
+.oe-band--elev { background: var(--oe-bg-elev); }
+.oe-band--nota { background: var(--oe-bg-tint); }
+.oe-band--dark { background: var(--oe-bg-dark); color: var(--oe-white); }
+.oe-band--dark h2, .oe-band--dark h3, .oe-band--dark p, .oe-band--dark li { color: var(--oe-white); }
+@media (max-width: 767.98px) { .oe-band { padding: var(--oe-space-2xl) 0; } }
+
+/* ---- Accordion --------------------------------------------------------- */
+/* «Scopri di più» (.oe-more) — la versione HTML statica dell'accordion, su <details>,
+   per i blocchi di testo densi delle landing di studio (sintesi, metodo, nota metodologica).
+   Riga di apertura a tutta larghezza con segno + / –, filetto sopra e sotto: da aperto si
+   vede sempre dove finisce il contenuto nascosto. Funziona senza JavaScript.
+     <details class="oe-more">
+       <summary>Scopri di più</summary>
+       <div class="oe-more__body"> … </div>
+     </details> */
+.oe-more {
+  margin: var(--oe-space-m) 0;
+  border-top: 1px solid var(--oe-gray-200);
+  border-bottom: 1px solid var(--oe-gray-200);
+}
+.oe-more > summary {
+  list-style: none;
+  display: flex; align-items: center; justify-content: space-between; gap: var(--oe-space-s);
+  min-height: 48px;                                  /* area cliccabile */
+  padding: var(--oe-space-s) var(--oe-space-xxs);
+  cursor: pointer;
+  font-family: var(--oe-font-sans); font-weight: 500; font-size: 16px; line-height: 1.3;
+  color: var(--oe-accent);
+}
+.oe-more > summary::-webkit-details-marker { display: none; }
+.oe-more > summary::after {
+  content: "+"; flex: 0 0 auto;
+  font-family: var(--oe-font-mono); font-size: 24px; line-height: 1; font-weight: 400;
+}
+.oe-more[open] > summary::after { content: "–"; }
+.oe-more > summary:hover { color: var(--oe-accent-strong); }
+.oe-more > summary:focus-visible { outline: 2px solid var(--oe-accent); outline-offset: 2px; }
+.oe-more__body { padding: 0 var(--oe-space-xxs) var(--oe-space-m); }
+.oe-more__body > :last-child { margin-bottom: 0; }
+.oe-more[open] .oe-more__body { animation: oe-more-in .24s cubic-bezier(.2,.7,.2,1); }
+@keyframes oe-more-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+.oe-band--dark .oe-more, .oe-hero-analisi .oe-more { border-color: rgba(255,255,255,.18); }
+.oe-band--dark .oe-more > summary { color: var(--oe-on-dark-accent); }
+@media (prefers-reduced-motion: reduce) { .oe-more[open] .oe-more__body { animation: none; } }
+@media print { .oe-more__body { display: block; } }
+
+.oe-accordion { border-top: 1px solid var(--oe-gray-200); }
+.oe-accordion__item { border-bottom: 1px solid var(--oe-gray-200); }
+.oe-accordion__head {
+  width: 100%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--oe-space-s);                 /* 16 */
+  padding: var(--oe-space-5) var(--oe-space-xxs);   /* 20 · 4 */
+  text-align: left;
+  font-family: var(--oe-font-sans);
+  font-weight: 500;
+  font-size: 20px;
+  color: var(--oe-gray-800);
+}
+.oe-accordion__sign {
+  font-family: var(--oe-font-mono);
+  font-size: 24px;
+  color: var(--oe-accent);
+  line-height: 1;
+}
+.oe-accordion__body {
+  padding: 0 var(--oe-space-xxs) var(--oe-space-5);   /* 0 · 4 · 20 */
+  font-family: var(--oe-font-sans);
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--oe-fg-soft);
+}
+
+/* ---- Figure label ------------------------------------------------------ */
+.oe-figure-label__title { color: var(--oe-gray-700); font-weight: 400; }
+
+/* ---- Footer ------------------------------------------------------------
+   Footer di brand su fondo Bluette scuro. Varianti: --standard, --analisi.
+   ----------------------------------------------------------------------- */
+.oe-footer {
+  background: var(--oe-bg-dark);
+  color: var(--oe-white);
+  font-family: var(--oe-font-sans);
+  padding-block: var(--oe-space-2xl) var(--oe-space-l);   /* 48 · 32 */
+  padding-inline: var(--oe-band-pad);                     /* allineato al contenitore */
+}
+.oe-footer__inner {
+  max-width: var(--oe-grid-max);                /* 1440 */
+  margin-inline: auto;
+}
+
+/* Parte alta: brand a sinistra, (analisi) disclaimer a destra */
+.oe-footer__top {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--oe-space-xl);
+  padding-bottom: var(--oe-space-xl);
+}
+.oe-footer--standard .oe-footer__top {
+  grid-template-columns: minmax(0, 1fr) auto;     /* brand · sede */
+  align-items: end;
+}
+.oe-footer--analisi .oe-footer__top {
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: var(--oe-space-3xl);
+  align-items: start;
+}
+
+/* Logo OpenEconomics = sempre un link al sito (barra, footer, ovunque compaia).
+   Il link avvolge l'svg senza cambiarne la misura. */
+.oe-logo-link { display: inline-block; flex: 0 0 auto; line-height: 0; color: inherit; }
+.oe-logo-link:focus-visible { outline: 2px solid currentColor; outline-offset: var(--oe-space-xxs); }
+
+.oe-footer__logo {
+  display: block;
+  width: auto;
+  height: 44px;                                 /* logo piccolo, mai dominante */
+  color: var(--oe-white);
+}
+.oe-footer--standard .oe-footer__logo { height: 52px; }
+
+.oe-footer__tagline {
+  font-family: var(--oe-font-serif);
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  /* Esplicito: il global `p { color: fg-soft }` vince sull'eredità del bianco. */
+  color: var(--oe-white);
+  margin: var(--oe-space-m) 0 0;
+  max-width: 40ch;
+  text-wrap: balance;
+}
+.oe-footer--analisi .oe-footer__tagline {
+  font-size: 22px;
+  max-width: 22ch;
+}
+
+.oe-footer__disclaimer {
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.86);
+  max-width: 68ch;
+}
+.oe-footer__disclaimer-label {
+  font-family: var(--oe-font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--oe-on-dark-accent);              /* accento su fondo scuro */
+  margin-right: var(--oe-space-xs);
+  white-space: nowrap;
+}
+
+/* Sede: etichetta mono accento + indirizzo e telefono */
+.oe-footer__hq {
+  display: flex;
+  flex-direction: column;
+  gap: var(--oe-space-xxs);
+  font-style: normal;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--oe-white);
+}
+.oe-footer--analisi .oe-footer__hq { margin-top: var(--oe-space-l); }
+.oe-footer__hq-label {
+  font-family: var(--oe-font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--oe-on-dark-accent);
+  margin-bottom: var(--oe-space-xxs);
+}
+.oe-footer__hq .oe-footer__link { font-size: 15px; align-self: flex-start; }
+
+.oe-footer__rule {
+  border: 0;
+  border-top: var(--oe-border-on-dark);         /* rgba(255,255,255,.18) */
+  margin: 0;
+}
+
+/* Parte bassa: meta legali + link */
+.oe-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--oe-space-s);
+  padding-top: var(--oe-space-m);
+}
+.oe-footer__meta {
+  margin: 0;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.82);
+}
+.oe-footer__site {
+  font-size: 14px;
+  color: var(--oe-white);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.4);
+  text-underline-offset: 3px;
+  transition: color var(--oe-dur-fast) var(--oe-ease),
+              text-decoration-color var(--oe-dur-fast) var(--oe-ease);
+}
+.oe-footer__site:hover,
+.oe-footer__site:focus-visible {
+  color: var(--oe-on-dark-accent);
+  text-decoration-color: currentColor;
+}
+.oe-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--oe-space-l);
+}
+.oe-footer__link {
+  color: var(--oe-white);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color var(--oe-dur-fast) var(--oe-ease);
+}
+.oe-footer__link:hover,
+.oe-footer__link:focus-visible { color: var(--oe-on-dark-accent); }
+
+@media (max-width: 767.98px) {
+  .oe-footer { padding: var(--oe-space-xl) var(--oe-space-m) var(--oe-space-m); }
+  .oe-footer--standard .oe-footer__top,
+  .oe-footer--analisi .oe-footer__top { grid-template-columns: 1fr; gap: var(--oe-space-l); }
+  .oe-footer__tagline,
+  .oe-footer--analisi .oe-footer__tagline { font-size: 22px; max-width: 32ch; }
+  .oe-footer__bottom { flex-direction: column; align-items: flex-start; }
+}
+
+/* =========================================================================
+   CIVIQA — componenti del brand di prodotto (namespace .cv-*)
+   Accento blu elettrico --cv-blu-600. Spigolo vivo come tutto il sistema.
+   ========================================================================= */
+
+/* ---- Civiqa · Chip ----------------------------------------------------- */
+.cv-chip {
+  display: inline-flex; align-items: center; gap: var(--oe-space-xs);
+  font-family: var(--oe-font-mono); text-transform: uppercase;
+  font-size: 13px; font-weight: 500; letter-spacing: 0.04em; line-height: 1;
+  padding: var(--oe-space-xs) var(--oe-space-3);             /* 8 · 12 */
+  background: var(--cv-blu-100); color: var(--cv-blu-700); border: 0;
+}
+.cv-chip::before { content: ""; width: 7px; height: 7px; background: currentColor; flex: none; }
+.cv-chip--active { background: var(--cv-blu-600); color: var(--oe-white); }
+
+/* ---- Civiqa · Button --------------------------------------------------- */
+.cv-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--oe-space-xs);
+  font-family: var(--oe-font-mono); text-transform: uppercase; letter-spacing: 0.04em;
+  font-size: 14px; font-weight: 500; line-height: 1;
+  padding: var(--oe-space-3) var(--oe-space-5);              /* 12 · 20 */
+  border: 1px solid transparent; cursor: pointer;
+  transition: background var(--oe-dur-fast) var(--oe-ease),
+              color var(--oe-dur-fast) var(--oe-ease),
+              border-color var(--oe-dur-fast) var(--oe-ease);
+}
+.cv-btn--primary { background: var(--cv-blu-600); color: var(--oe-white); }
+.cv-btn--primary:hover { background: var(--cv-blu-700); }
+.cv-btn--dark { background: var(--cv-blu-900); color: var(--oe-white); }
+.cv-btn--dark:hover { background: var(--cv-blu-800); }
+.cv-btn--outline { background: transparent; color: var(--cv-blu-600); border-color: var(--cv-blu-600); }
+.cv-btn--outline:hover { background: var(--cv-blu-050); }
+.cv-btn--tint { background: var(--cv-blu-100); color: var(--cv-blu-700); }
+.cv-btn--tint:hover { background: var(--cv-blu-200); }
+.cv-btn--link {
+  background: transparent; border: 0; padding: var(--oe-space-xs) 0;
+  font-family: var(--oe-font-sans); text-transform: none; letter-spacing: normal;
+  font-size: 15px; color: var(--cv-blu-600);
+}
+.cv-btn--link:hover { text-decoration: underline; }
+/* outline chiaro su fondi blu scuri (footer) */
+.cv-btn--ghost-light { background: transparent; color: var(--oe-white); border-color: rgba(255, 255, 255, 0.5); }
+.cv-btn--ghost-light:hover { border-color: var(--oe-white); }
+
+/* ---- Civiqa · Top nav (menu) ------------------------------------------ */
+.cv-nav {
+  display: flex; align-items: center; gap: var(--oe-space-l);
+  background: var(--oe-white); border: 1px solid var(--oe-gray-200);
+  padding-block: var(--oe-space-s);
+  padding-inline: var(--oe-band-pad);   /* allineato al contenitore di pagina */
+}
+.cv-nav__logo { height: 26px; width: auto; color: var(--oe-black); display: block; }
+.cv-nav__links { display: flex; gap: var(--oe-space-l); margin-left: var(--oe-space-xl); }
+.cv-nav__link {
+  font-family: var(--oe-font-sans); font-size: 15px; color: var(--oe-gray-900);
+  text-decoration: none; padding: var(--oe-space-xxs) 0;
+  border-bottom: 2px solid transparent; transition: border-color var(--oe-dur-fast) var(--oe-ease);
+}
+.cv-nav__link:hover, .cv-nav__link.is-active { border-bottom-color: var(--cv-blu-600); }
+.cv-nav__oe { margin-left: auto; font-family: var(--oe-font-sans); font-size: 15px; color: var(--oe-gray-900); text-decoration: none; }
+.cv-nav__oe:hover { color: var(--cv-blu-600); }
+
+/* ---- Civiqa · Icon tile ----------------------------------------------- */
+.cv-icon {
+  width: 56px; height: 56px; display: grid; place-items: center;
+  background: var(--cv-blu-800);   /* #000068 */
+  color: var(--cv-blu-100);        /* #D5D5FF */
+}
+.cv-icon svg { width: 28px; height: 28px; display: block; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---- Civiqa · Footer --------------------------------------------------- */
+.cv-footer {
+  background: var(--cv-blu-900); color: var(--oe-white); font-family: var(--oe-font-sans);
+  padding: var(--oe-space-2xl) var(--oe-space-xl) var(--oe-space-l);
+}
+.cv-footer__inner { max-width: var(--oe-grid-max); margin-inline: auto; }
+.cv-footer__logo { height: 56px; width: auto; color: var(--oe-white); display: block; margin-bottom: var(--oe-space-xl); }
+.cv-footer__top { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: var(--oe-space-xl); padding-bottom: var(--oe-space-xl); }
+.cv-footer__cols { display: flex; gap: var(--oe-space-3xl); }
+.cv-footer__col { display: flex; flex-direction: column; gap: var(--oe-space-s); }
+.cv-footer__link { color: var(--oe-white); text-decoration: none; font-size: 15px; }
+.cv-footer__link:hover { color: var(--cv-blu-200); }
+.cv-footer__cta { display: flex; flex-direction: column; gap: var(--oe-space-s); align-items: flex-start; }
+.cv-footer__rule { border: 0; border-top: 1px solid rgba(255, 255, 255, 0.22); margin: 0; }
+.cv-footer__mid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: var(--oe-space-xl); padding: var(--oe-space-l) 0; align-items: start; }
+.cv-footer__tagline { font-family: var(--oe-font-serif); font-size: 26px; line-height: 1.15; color: var(--oe-white); margin: 0; max-width: 22ch; }
+.cv-footer__addr { font-size: 13px; line-height: 1.5; color: rgba(255, 255, 255, 0.82); }
+.cv-footer__social { display: flex; gap: var(--oe-space-s); margin-top: var(--oe-space-m); }
+.cv-footer__social a { width: 32px; height: 32px; display: grid; place-items: center; background: var(--oe-white); color: var(--cv-blu-900); }
+.cv-footer__bottom { display: flex; flex-wrap: wrap; align-items: center; gap: var(--oe-space-m); padding-top: var(--oe-space-m); font-size: 13px; color: rgba(255, 255, 255, 0.82); }
+.cv-footer__legal { display: flex; gap: var(--oe-space-l); }
+.cv-footer__legal a { color: rgba(255, 255, 255, 0.82); text-decoration: none; }
+.cv-footer__legal a:hover { color: var(--oe-white); }
+.cv-footer__lang { margin-left: auto; display: flex; gap: var(--oe-space-xs); }
+.cv-footer__lang a { color: rgba(255, 255, 255, 0.6); text-decoration: none; }
+.cv-footer__lang a.is-active { color: var(--oe-white); text-decoration: underline; }
+
+@media (max-width: 767.98px) {
+  .cv-footer__top, .cv-footer__mid { grid-template-columns: 1fr; gap: var(--oe-space-l); }
+  .cv-footer__cols { flex-direction: column; gap: var(--oe-space-l); }
+  .cv-nav { flex-wrap: wrap; }
+  .cv-nav__links { margin-left: 0; }
+  .cv-footer__bottom { flex-direction: column; align-items: flex-start; }
+  .cv-footer__lang { margin-left: 0; }
+}
+
+/* =========================================================================
+   COMPONENTI UI AGGIUNTIVI — coerenti coi token, spigolo vivo.
+   Usano l'accento via --oe-accent / --oe-accent-*, quindi si tematizzano
+   da soli sotto .theme-civiqa (accento blu).
+   ========================================================================= */
+
+/* ---- Card ------------------------------------------------------------- */
+.oe-card {
+  background: var(--oe-white); border: 1px solid var(--oe-gray-200);
+  padding: var(--oe-space-m); display: flex; flex-direction: column; gap: var(--oe-space-s);
+}
+.oe-card__media { aspect-ratio: 16 / 9; background: var(--oe-gray-100); display: block; }
+.oe-card__eyebrow { font-family: var(--oe-font-mono); text-transform: uppercase; font-size: 11px; letter-spacing: 0.04em; color: var(--oe-accent); }
+.oe-card__meta { font-family: var(--oe-font-mono); font-size: 12px; color: var(--oe-gray-500); }
+.oe-card__title { font-family: var(--oe-font-sans); font-size: 20px; font-weight: 500; line-height: 1.25; color: var(--oe-gray-900); margin: 0; }
+.oe-card__body { font-family: var(--oe-font-sans); font-size: 15px; font-weight: 300; line-height: 1.5; color: var(--oe-fg-soft); margin: 0; }
+.oe-card__foot { margin-top: auto; padding-top: var(--oe-space-xs); }
+/* Feature card: striscia di accento piena in alto (non un side-stripe) */
+.oe-card--feature { border-top: 4px solid var(--oe-accent); }
+
+/* ---- Form & input ----------------------------------------------------- */
+.oe-field { display: flex; flex-direction: column; gap: var(--oe-space-xs); }
+.oe-label { font-family: var(--oe-font-mono); text-transform: uppercase; font-size: 11px; letter-spacing: 0.04em; color: var(--oe-gray-700); }
+.oe-input, .oe-select, .oe-textarea {
+  font-family: var(--oe-font-sans); font-size: 15px; color: var(--oe-gray-900);
+  background: var(--oe-white); border: 1px solid var(--oe-gray-300);
+  padding: var(--oe-space-3) var(--oe-space-s); width: 100%;
+  transition: border-color var(--oe-dur-fast) var(--oe-ease);
+}
+.oe-input::placeholder, .oe-textarea::placeholder { color: var(--oe-gray-500); }
+.oe-input:focus, .oe-select:focus, .oe-textarea:focus { outline: none; border-color: var(--oe-accent); }
+.oe-input:disabled, .oe-select:disabled, .oe-textarea:disabled { background: var(--oe-gray-100); color: var(--oe-gray-500); cursor: not-allowed; }
+.oe-textarea { resize: vertical; min-height: 96px; }
+.oe-field__hint { font-family: var(--oe-font-sans); font-size: 13px; color: var(--oe-gray-500); }
+.oe-field--error .oe-input { border-color: var(--oe-magenta-700); }
+.oe-field--error .oe-field__hint { color: var(--oe-magenta-700); }
+/* search input: icona a sinistra */
+.oe-search { position: relative; display: flex; align-items: center; }
+.oe-search svg { position: absolute; left: var(--oe-space-s); width: 18px; height: 18px; color: var(--oe-gray-500); pointer-events: none; }
+.oe-search .oe-input { padding-left: 44px; }
+
+/* checkbox & radio — coerenti col sistema a spigolo vivo */
+.oe-check { display: inline-flex; align-items: center; gap: var(--oe-space-xs); font-family: var(--oe-font-sans); font-size: 15px; color: var(--oe-gray-800); cursor: pointer; }
+.oe-check input { appearance: none; -webkit-appearance: none; width: 18px; height: 18px; flex: none; border: 1px solid var(--oe-gray-400); background: var(--oe-white); display: grid; place-content: center; cursor: pointer; transition: background var(--oe-dur-fast) var(--oe-ease), border-color var(--oe-dur-fast) var(--oe-ease); }
+.oe-check input:focus-visible { outline: 2px solid var(--oe-accent); outline-offset: 2px; }
+.oe-check input:checked { background: var(--oe-accent); border-color: var(--oe-accent); }
+/* spunta della checkbox */
+.oe-check input[type="checkbox"]:checked::after { content: ""; width: 9px; height: 5px; border-left: 2px solid #fff; border-bottom: 2px solid #fff; transform: translateY(-1px) rotate(-45deg); }
+/* quadratino interno del radio (niente angoli tondi nel sistema) */
+.oe-check input[type="radio"]:checked::after { content: ""; width: 8px; height: 8px; background: #fff; }
+.oe-check input:disabled { background: var(--oe-gray-100); border-color: var(--oe-gray-300); cursor: not-allowed; }
+
+/* toggle switch (spigolo vivo) */
+.oe-switch { position: relative; display: inline-flex; align-items: center; gap: var(--oe-space-xs); cursor: pointer; font-family: var(--oe-font-sans); font-size: 15px; color: var(--oe-gray-800); }
+.oe-switch input { appearance: none; -webkit-appearance: none; width: 40px; height: 22px; background: var(--oe-gray-300); cursor: pointer; position: relative; transition: background var(--oe-dur-fast) var(--oe-ease); flex: none; }
+.oe-switch input::after { content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; background: #fff; transition: transform var(--oe-dur-fast) var(--oe-ease); }
+.oe-switch input:checked { background: var(--oe-accent); }
+.oe-switch input:checked::after { transform: translateX(18px); }
+
+/* ---- Table ------------------------------------------------------------ */
+.oe-table { width: 100%; border-collapse: collapse; }
+.oe-table thead th {
+  font-family: var(--oe-font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--oe-gray-700); background: var(--oe-gray-100); text-align: left;
+  padding: var(--oe-space-3) var(--oe-space-s); white-space: nowrap;
+}
+.oe-table tbody td {
+  font-family: var(--oe-font-sans); font-size: 15px; color: var(--oe-gray-800);
+  padding: var(--oe-space-3) var(--oe-space-s); border-top: 1px solid var(--oe-gray-200);
+}
+.oe-table tbody tr:hover td { background: var(--oe-accent-soft); }
+/* allineamento numerico tabulare per le colonne dati */
+.oe-table--numeric th + th, .oe-table--numeric td + td { text-align: right; font-variant-numeric: tabular-nums; }
+.oe-table__wrap { border: 1px solid var(--oe-gray-200); overflow-x: auto; }
+
+/* ---- Tabs ------------------------------------------------------------- */
+.oe-tabs { display: flex; gap: var(--oe-space-l); border-bottom: 1px solid var(--oe-gray-200); }
+.oe-tab {
+  font-family: var(--oe-font-sans); font-size: 15px; color: var(--oe-fg-soft);
+  background: none; border: 0; border-bottom: 2px solid transparent; cursor: pointer;
+  padding: var(--oe-space-s) 0; transition: color var(--oe-dur-fast) var(--oe-ease), border-color var(--oe-dur-fast) var(--oe-ease);
+}
+.oe-tab:hover { color: var(--oe-accent); }
+.oe-tab.is-active { color: var(--oe-accent); border-bottom-color: var(--oe-accent); font-weight: 500; }
+
+/* ---- Badge (stato) ---------------------------------------------------- */
+.oe-badge {
+  display: inline-flex; align-items: center; gap: var(--oe-space-xs);
+  font-family: var(--oe-font-sans); font-size: 13px; font-weight: 500; line-height: 1;
+  padding: var(--oe-space-xxs) var(--oe-space-xs); background: var(--oe-gray-100); color: var(--oe-gray-800);
+}
+.oe-badge::before { content: ""; width: 7px; height: 7px; background: currentColor; flex: none; }
+.oe-badge--success { color: var(--oe-green-700); }
+.oe-badge--warning { color: #7A6A00; }
+.oe-badge--danger  { color: var(--oe-magenta-700); }
+.oe-badge--info    { color: var(--oe-accent); }
+.oe-badge--neutral { color: var(--oe-gray-600); }
+
+/* ---- Pagination ------------------------------------------------------- */
+.oe-pagination { display: inline-flex; gap: var(--oe-space-xxs); }
+.oe-page {
+  min-width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--oe-font-sans); font-size: 14px; color: var(--oe-gray-800);
+  background: var(--oe-white); border: 1px solid var(--oe-gray-200); cursor: pointer;
+  transition: border-color var(--oe-dur-fast) var(--oe-ease), color var(--oe-dur-fast) var(--oe-ease);
+}
+.oe-page:hover:not(:disabled) { border-color: var(--oe-accent); color: var(--oe-accent); }
+.oe-page.is-active { background: var(--oe-accent); border-color: var(--oe-accent); color: var(--oe-white); }
+.oe-page:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ---- Filtri (segmented control) -------------------------------------- */
+.oe-segment { display: inline-flex; }
+.oe-segment__btn {
+  font-family: var(--oe-font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: -0.01em;
+  padding: 7px var(--oe-space-3); background: var(--oe-white); color: var(--oe-fg-soft);
+  border: 1px solid var(--oe-gray-200); cursor: pointer; transition: all var(--oe-dur-fast) var(--oe-ease);
+}
+.oe-segment__btn + .oe-segment__btn { border-left: 0; }
+.oe-segment__btn:hover { color: var(--oe-accent); }
+.oe-segment__btn.is-active { background: var(--oe-accent); border-color: var(--oe-accent); color: var(--oe-white); }
+
+/* ---- Site header (nav marketing) ------------------------------------- */
+.oe-header {
+  display: flex; align-items: center; gap: var(--oe-space-l);
+  background: var(--oe-white); border-bottom: 1px solid var(--oe-gray-200);
+  padding: var(--oe-space-s) var(--oe-space-l);
+}
+.oe-header__logo { height: 28px; width: auto; color: var(--oe-black); display: block; }
+.oe-header__links { display: flex; gap: var(--oe-space-l); margin-left: var(--oe-space-xl); }
+.oe-header__link { font-family: var(--oe-font-sans); font-size: 15px; color: var(--oe-gray-900); text-decoration: none; }
+.oe-header__link:hover, .oe-header__link.is-active { color: var(--oe-accent); }
+.oe-header__cta { margin-left: auto; }
+
+/* ---- Dashboard nav (sidebar) ----------------------------------------- */
+.oe-dashnav {
+  background: var(--oe-gray-100); border-right: 1px solid var(--oe-gray-200);
+  padding: var(--oe-space-m) 0; display: flex; flex-direction: column; min-width: 220px;
+}
+.oe-dashnav__title { font-family: var(--oe-font-mono); text-transform: uppercase; font-size: 11px; letter-spacing: 0.06em; color: var(--oe-gray-600); padding: var(--oe-space-s) var(--oe-space-m) var(--oe-space-xxs); }
+.oe-dashnav__item {
+  display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; cursor: pointer;
+  background: none; border: 0; border-left: 3px solid transparent;
+  font-family: var(--oe-font-sans); font-size: 14px; color: var(--oe-gray-800);
+  padding: 11px var(--oe-space-m);
+  transition: color var(--oe-dur-fast) var(--oe-ease), border-color var(--oe-dur-fast) var(--oe-ease);
+}
+.oe-dashnav__item:hover { color: var(--oe-accent); }
+.oe-dashnav__item.is-active { color: var(--oe-accent); border-left-color: var(--oe-accent); font-weight: 500; }
+
+/* ---- Slogan (lockup su fondo scuro) ---------------------------------- */
+.oe-slogan {
+  background: var(--oe-bg-dark); color: var(--oe-white);
+  padding: var(--oe-space-xl) var(--oe-space-2xl);
+  display: flex; flex-direction: column; gap: var(--oe-space-m);
+}
+.oe-slogan__src { font-family: var(--oe-font-mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.02em; color: var(--oe-on-dark-muted); }
+.oe-slogan__text { font-family: var(--oe-font-serif); font-size: 36px; line-height: 1.1; letter-spacing: -0.005em; text-wrap: balance; max-width: 580px; color: var(--oe-white); margin: 0; }
+
+/* ---- Client strip (loghi clienti, monocromatici) --------------------- */
+.oe-client-strip {
+  display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap;
+  gap: var(--oe-space-l); background: var(--oe-white);
+  padding: var(--oe-space-l) var(--oe-space-m);
+  border-top: 1px solid var(--oe-gray-200); border-bottom: 1px solid var(--oe-gray-200);
+}
+.oe-client-strip span { font-family: var(--oe-font-serif); font-size: 22px; color: var(--oe-black); letter-spacing: 0.01em; }
+
+/* =========================================================================
+   UI BLOCKS — sezioni intere composte dai componenti (stile "Tailwind UI").
+   Helper di layout; il contenuto riusa .oe-* / componenti. Tematizzabili
+   sotto .theme-civiqa.
+   ========================================================================= */
+
+/* Bottone inverso: bianco su fondi accento/scuri (testo accento) */
+.oe-btn--inverse { background: var(--oe-white); color: var(--oe-accent); }
+.oe-btn--inverse:hover { background: var(--oe-accent-soft); }
+
+/* ---- Hero -------------------------------------------------------------- */
+.oe-hero { display: flex; flex-direction: column; gap: var(--oe-space-m); padding: var(--oe-space-3xl) 0; max-width: 64ch; }
+.oe-hero__title { font-family: var(--oe-font-serif); font-size: clamp(40px, 6vw, 72px); line-height: 1.05; letter-spacing: -0.01em; color: var(--oe-gray-900); margin: 0; text-wrap: balance; }
+.oe-hero__lead { font-size: 20px; font-weight: 300; line-height: 1.5; color: var(--oe-fg-soft); margin: 0; max-width: 56ch; }
+.oe-hero__actions { display: flex; gap: var(--oe-space-s); flex-wrap: wrap; margin-top: var(--oe-space-xs); }
+
+/* ---- Navigazione Analisi (UI Block) -----------------------------------
+   Testata di ogni landing di studio o analisi, con la stessa impostazione della
+   barra della home Studies: un pannello sospeso, fisso in alto sopra la hero,
+   largo quanto il contenitore (1440 + 32).
+   1. .oe-nav-analisi — riquadro bianco: logo OpenEconomics (link al sito) ed
+      etichetta «Studies» a sinistra, link «Torna agli studi» a destra.
+   2. .oe-nav-sezioni — riquadro grigio attaccato sotto: una label per ogni
+      sezione che ha il chip lime, allineate al logo. Ogni label è un'ancora alla
+      sezione e ripete il testo del suo chip. Le voci si vedono sempre tutte: se
+      non stanno in una riga vanno a capo. Sotto i 768px il riquadro si chiude
+      dietro il pulsante hamburger (__toggle), che mostra la sezione in vista.
+   Lo script oe-nav-sezioni.js accende la voce della sezione in vista
+   (.is-active), aggiunge filetto e ombra dopo i primi 24px di scorrimento
+   (.is-scrolled, come in Studies) e misura il pannello: la hero gli lascia
+   spazio e le ancore si fermano sotto. */
+:root { --oe-nav-top: var(--oe-space-s); }
+.oe-nav-analisi, .oe-nav-sezioni {
+  position: fixed; left: 0; right: 0; z-index: 50; pointer-events: none;
+}
+.oe-nav-analisi { top: var(--oe-nav-top); }
+.oe-nav-sezioni { top: calc(var(--oe-nav-top) + var(--oe-nav-analisi-h, 62px)); }
+.oe-nav-analisi__inner, .oe-nav-sezioni__inner {
+  pointer-events: auto; border: 1px solid transparent;
+  transition: border-color var(--oe-dur-base) var(--oe-ease), box-shadow var(--oe-dur-base) var(--oe-ease);
+}
+.oe-nav-analisi__inner {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--oe-space-l);
+  min-height: 60px; padding: var(--oe-space-3) var(--oe-space-m); background: var(--oe-white);
+}
+.oe-nav-sezioni__inner { background: var(--oe-bg-elev); border-top-color: var(--oe-gray-200); padding-inline: var(--oe-space-m); }
+/* dopo i primi passi di scorrimento il pannello prende filetto e ombra leggera (hairline lift del DS) */
+.oe-nav-analisi.is-scrolled .oe-nav-analisi__inner,
+.oe-nav-sezioni.is-scrolled .oe-nav-sezioni__inner {
+  border-color: var(--oe-gray-200);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+.oe-nav-analisi.is-scrolled .oe-nav-analisi__inner { border-bottom-color: transparent; }
+
+.oe-nav-analisi__brand { display: flex; align-items: center; gap: var(--oe-space-s); }
+.oe-nav-analisi__logo { height: 20px; width: auto; color: var(--oe-black); display: block; flex: 0 0 auto; }
+.oe-nav-analisi__badge {
+  font-family: var(--oe-font-mono); font-size: 13px; font-weight: 500; line-height: 20px;
+  text-transform: uppercase; letter-spacing: -0.01em; color: var(--oe-accent);
+  padding-left: var(--oe-space-s); border-left: 1px solid var(--oe-gray-300);
+}
+.oe-nav-analisi__link {
+  font-family: var(--oe-font-sans); font-size: 15px; font-weight: 500; white-space: nowrap;
+  color: var(--oe-fg); text-decoration: none; padding-block: var(--oe-space-xs);
+  transition: color var(--oe-dur-fast) var(--oe-ease);
+}
+.oe-nav-analisi__link:hover { color: var(--oe-accent); }
+
+.oe-nav-sezioni__list {
+  display: flex; flex-wrap: wrap; column-gap: var(--oe-space-l); row-gap: 0;
+  margin: 0; padding: var(--oe-space-xs) 0; list-style: none;
+}
+.oe-nav-sezioni__link {
+  display: block; text-decoration: none;
+  font-family: var(--oe-font-sans); font-size: 15px; color: var(--oe-fg-soft);
+  padding-block: var(--oe-space-xs); border-bottom: 2px solid transparent;
+  transition: color var(--oe-dur-fast) var(--oe-ease), border-color var(--oe-dur-fast) var(--oe-ease);
+}
+.oe-nav-sezioni__link:hover { color: var(--oe-accent); }
+.oe-nav-sezioni__link.is-active { color: var(--oe-accent); border-bottom-color: var(--oe-accent); font-weight: 500; }
+.oe-nav-sezioni__link:focus-visible,
+.oe-nav-sezioni__toggle:focus-visible { outline: 2px solid var(--oe-accent); outline-offset: -2px; }
+
+/* pulsante hamburger: solo sotto i 768px */
+.oe-nav-sezioni__toggle {
+  display: none; width: 100%; min-height: 48px; padding: 0; gap: var(--oe-space-s);
+  align-items: center; justify-content: space-between; cursor: pointer;
+  background: none; border: 0; text-align: left;
+  font-family: var(--oe-font-sans); font-size: 15px; font-weight: 500; color: var(--oe-fg);
+}
+.oe-nav-sezioni__current { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.oe-nav-sezioni__burger,
+.oe-nav-sezioni__burger::before,
+.oe-nav-sezioni__burger::after {
+  display: block; width: 20px; height: 2px; background: currentColor;
+  transition: transform var(--oe-dur-fast) var(--oe-ease), background-color var(--oe-dur-fast) var(--oe-ease);
+}
+.oe-nav-sezioni__burger { position: relative; flex: 0 0 auto; margin-right: var(--oe-space-xxs); }
+.oe-nav-sezioni__burger::before,
+.oe-nav-sezioni__burger::after { content: ""; position: absolute; left: 0; }
+.oe-nav-sezioni__burger::before { top: -6px; }
+.oe-nav-sezioni__burger::after { top: 6px; }
+/* aperto: le tre linee diventano una X */
+.oe-nav-sezioni.is-open .oe-nav-sezioni__burger { background: transparent; }
+.oe-nav-sezioni.is-open .oe-nav-sezioni__burger::before { transform: translateY(6px) rotate(45deg); }
+.oe-nav-sezioni.is-open .oe-nav-sezioni__burger::after { transform: translateY(-6px) rotate(-45deg); }
+
+@media (max-width: 767.98px) {
+  :root { --oe-nav-top: var(--oe-space-xs); }
+  .oe-nav-analisi__inner { min-height: 52px; padding: var(--oe-space-xs) var(--oe-space-s); gap: var(--oe-space-s); }
+  .oe-nav-analisi__brand { gap: var(--oe-space-3); }
+  .oe-nav-analisi__logo { height: 16px; }
+  .oe-nav-analisi__badge { padding-left: var(--oe-space-3); }
+  .oe-nav-sezioni__inner { padding-inline: var(--oe-space-s); }
+  .oe-nav-sezioni__toggle { display: flex; }
+  .oe-nav-sezioni__list {
+    display: none; flex-direction: column; flex-wrap: nowrap; padding: 0 0 var(--oe-space-s);
+    border-top: 1px solid var(--oe-gray-200);
+    max-height: calc(100svh - var(--oe-nav-sezioni-h, 140px)); overflow-y: auto; overscroll-behavior: contain;
+  }
+  .oe-nav-sezioni.is-open .oe-nav-sezioni__list { display: flex; }
+  .oe-nav-sezioni__link { padding-block: var(--oe-space-s); border-bottom: 0; }
+  .oe-nav-sezioni__link.is-active { border-bottom: 0; }
+}
+/* telefoni stretti: l'etichetta «Studies» cede il posto a «Torna agli studi» */
+@media (max-width: 399.98px) { .oe-nav-analisi__badge { display: none; } }
+/* il pannello è sospeso sopra la hero: la hero gli lascia spazio sopra il contenuto,
+   le sezioni raggiunte dal menu si fermano sotto. --oe-nav-sezioni-h = fondo del
+   pannello chiuso + 16px, lo scrive lo script; 160px è il valore di riserva */
+.oe-nav-sezioni ~ .oe-hero-analisi {
+  padding-top: max(var(--oe-space-11), calc(var(--oe-nav-sezioni-h, 160px) + var(--oe-space-l)));
+}
+html:has(.oe-nav-sezioni) section[id] { scroll-margin-top: var(--oe-nav-sezioni-h, 160px); }
+@media print { .oe-nav-analisi, .oe-nav-sezioni { display: none; } }
+
+/* ---- Hero Analisi (UI Block) ------------------------------------------
+   Hero delle landing di studi e analisi. La fascia è full-bleed: sfondo,
+   immagine e velo stanno qui, il contenuto va in un .oe-container interno.
+   Struttura: riga alta (chip + logo cliente) · titolo · sottotitolo
+   facoltativo · indicatori (set chiuso di cinque). */
+.oe-hero-analisi {
+  position: relative; isolation: isolate; overflow: hidden;
+  min-height: 92svh; display: flex; align-items: center;
+  background: var(--oe-bg-dark); color: var(--oe-white);
+  padding-block: var(--oe-space-11) var(--oe-space-12);
+}
+.oe-hero-analisi__media { position: absolute; inset: 0; z-index: -2; }
+.oe-hero-analisi__media img {
+  width: 100%; height: 100%; object-fit: cover; object-position: center 62%;
+  transform: scale(1.06); animation: oe-hero-analisi-in 18s ease-out forwards;
+}
+@keyframes oe-hero-analisi-in { from { transform: scale(1.12); } to { transform: scale(1); } }
+/* velo pieno in Bluette 900 sopra l'immagine: colore di brand uniforme su tutta
+   la fascia, la fotografia resta leggibile sotto */
+.oe-hero-analisi::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: color-mix(in srgb, var(--oe-bg-dark) 86%, transparent);
+}
+/* riga alta: chip a sinistra, logo del cliente a destra */
+.oe-hero-analisi__top {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--oe-space-m); margin-bottom: var(--oe-space-l);
+}
+.oe-hero-analisi__client { max-height: 46px; width: auto; flex: 0 0 auto; }
+.oe-hero-analisi__client--invert { filter: brightness(0) invert(1); }
+.oe-hero-analisi__title {
+  font-family: var(--oe-font-serif); font-weight: 400;
+  font-size: clamp(40px, 6.2vw, 76px); line-height: 1.04; letter-spacing: -0.01em;
+  margin: 0 0 var(--oe-space-m); max-width: 19ch; color: var(--oe-white); text-wrap: balance;
+}
+.oe-hero-analisi__sub {
+  font-size: clamp(18px, 2vw, 22px); line-height: 1.45; font-weight: 300;
+  color: rgba(255, 255, 255, 0.88); max-width: 60ch; margin: 0;
+}
+/* indicatori: set chiuso — tipo di analisi · modello/metodologia · fonti ·
+   anno di riferimento · ultimo aggiornamento. Si omettono quelli mancanti. */
+.oe-hero-analisi__meta {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: var(--oe-space-m); margin: var(--oe-space-xl) 0 0;
+  padding-top: var(--oe-space-m); border-top: 1px solid rgba(255, 255, 255, 0.24);
+}
+.oe-hero-analisi__meta dt {
+  font-family: var(--oe-font-mono); font-size: 13px; text-transform: uppercase;
+  letter-spacing: 0.04em; color: var(--oe-on-dark-accent); margin-bottom: 6px;
+}
+.oe-hero-analisi__meta dd { margin: 0; font-size: 16px; color: var(--oe-white); }
+.oe-hero-analisi__cue {
+  position: absolute; left: 50%; transform: translateX(-50%); bottom: 22px; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 0;
+  font-family: var(--oe-font-mono); font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(255, 255, 255, 0.72);
+}
+.oe-hero-analisi__cue span {
+  display: block; width: 1px; height: 26px; background: var(--oe-pop);
+  animation: oe-hero-analisi-cue 2.4s ease-in-out infinite;
+}
+@keyframes oe-hero-analisi-cue {
+  0%, 100% { opacity: 0.25; transform: scaleY(0.4); transform-origin: top; }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+@media (max-width: 767.98px) {
+  .oe-hero-analisi { min-height: 88svh; padding-block: var(--oe-space-9) var(--oe-space-10); }
+  .oe-hero-analisi__media img { object-position: center 58%; }
+  .oe-hero-analisi__top { margin-bottom: var(--oe-space-m); gap: var(--oe-space-s); }
+  .oe-hero-analisi__client { max-height: 30px; }
+  .oe-hero-analisi__title { font-size: clamp(30px, 8.4vw, 44px); max-width: none; margin-bottom: var(--oe-space-s); }
+  .oe-hero-analisi__sub { font-size: 17px; }
+  .oe-hero-analisi__meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--oe-space-s) var(--oe-space-m);
+    margin-top: var(--oe-space-l); padding-top: var(--oe-space-s);
+  }
+  .oe-hero-analisi__meta dd { font-size: 15px; }
+  .oe-hero-analisi__cue { display: none; }
+}
+@media (max-width: 440px) {
+  .oe-hero-analisi__meta { grid-template-columns: 1fr; gap: var(--oe-space-s); }
+  .oe-hero-analisi__top { flex-direction: column; align-items: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .oe-hero-analisi__media img { animation: none; transform: none; }
+  .oe-hero-analisi__cue span { animation: none; }
+}
+
+/* ---- Stats band (numeri su fondo scuro) ------------------------------- */
+.oe-stats { background: var(--oe-bg-dark); color: var(--oe-white); padding-block: var(--oe-space-2xl); padding-inline: var(--oe-band-pad); }
+.oe-stats__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--oe-space-xl); max-width: var(--oe-grid-max); margin-inline: auto; }
+.oe-stat__num { font-family: var(--oe-font-serif); font-size: 48px; font-weight: 400; line-height: 1; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; color: var(--oe-white); }
+.oe-stat__label { font-family: var(--oe-font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--oe-on-dark-muted); margin-top: var(--oe-space-xs); }
+
+/* ---- CTA band (fondo accento) ----------------------------------------- */
+.oe-cta { background: var(--oe-bg-accent); color: var(--oe-white); padding-block: var(--oe-space-2xl); padding-inline: var(--oe-band-pad); display: flex; align-items: center; justify-content: space-between; gap: var(--oe-space-l); flex-wrap: wrap; }
+.oe-cta__title { font-family: var(--oe-font-serif); font-size: clamp(28px, 3.5vw, 40px); line-height: 1.1; color: var(--oe-white); margin: 0; max-width: 26ch; }
+.oe-cta__text { color: rgba(255, 255, 255, 0.85); max-width: 48ch; margin: var(--oe-space-xs) 0 0; }
+
+/* ---- Report header ---------------------------------------------------- */
+.oe-report-head { display: flex; flex-direction: column; gap: var(--oe-space-s); padding-bottom: var(--oe-space-l); border-bottom: 1px solid var(--oe-gray-200); }
+.oe-report-head__title { font-family: var(--oe-font-serif); font-size: clamp(32px, 4vw, 48px); line-height: 1.1; color: var(--oe-gray-900); margin: 0; text-wrap: balance; }
+.oe-report-head__meta { display: flex; flex-wrap: wrap; gap: var(--oe-space-m); font-family: var(--oe-font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--oe-gray-500); }
+
+/* ---- Panel (contenitore per grafici/contenuti dashboard) -------------- */
+.oe-panel { background: var(--oe-white); border: 1px solid var(--oe-gray-200); padding: var(--oe-space-m); display: flex; flex-direction: column; gap: var(--oe-space-s); }
+.oe-panel__head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--oe-space-s); }
+.oe-panel__label { font-family: var(--oe-font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--oe-accent); }
+.oe-panel__title { font-family: var(--oe-font-sans); font-size: 17px; font-weight: 500; color: var(--oe-gray-800); margin: 2px 0 0; }
+.oe-panel__chart { aspect-ratio: 16 / 9; background: var(--oe-gray-100); display: grid; place-items: center; color: var(--oe-gray-500); font-family: var(--oe-font-mono); font-size: 12px; }
+
+/* ---- App shell (dashboard) -------------------------------------------- */
+.oe-shell { display: grid; grid-template-columns: 240px 1fr; min-height: 460px; border: 1px solid var(--oe-gray-200); overflow: hidden; }
+.oe-shell__main { display: flex; flex-direction: column; min-width: 0; }
+.oe-shell__content { flex: 1; padding: var(--oe-space-l); background: var(--oe-gray-100); container-type: inline-size; overflow: auto; }
+@media (max-width: 767.98px) {
+  .oe-shell { grid-template-columns: 1fr; }
+  .oe-cta { flex-direction: column; align-items: flex-start; }
+}
+
+/* ---- Dashboard topbar ------------------------------------------------- */
+.oe-topbar {
+  display: flex; align-items: center; gap: var(--oe-space-m);
+  background: var(--oe-white); border-bottom: 4px solid var(--oe-pop);
+  padding: var(--oe-space-s) var(--oe-space-l);
+}
+.oe-topbar__eyebrow { font-family: var(--oe-font-sans); font-weight: 500; font-size: 13px; text-transform: uppercase; letter-spacing: 0.02em; color: var(--oe-accent); }
+.oe-topbar__title { margin: 2px 0 0; font-family: var(--oe-font-serif); font-size: 24px; line-height: 1.1; color: var(--oe-gray-900); }
+.oe-topbar__actions { margin-left: auto; }
+
+/* =========================================================================
+   TABELLE DASHBOARD — composizioni specifiche per i dati finanziari.
+   ========================================================================= */
+
+/* ---- Tabella CapEx/OPEX (header accento, prima colonna etichetta, totale) */
+.oe-table--capex thead th {
+  background: var(--oe-accent); color: var(--oe-white);
+  text-align: right; text-transform: uppercase; letter-spacing: 0.04em;
+  border-right: 1px solid rgba(255, 255, 255, 0.2); border-bottom: 0;
+}
+.oe-table--capex thead th:first-child { background: var(--oe-accent-strong); text-align: left; }
+.oe-table--capex td { text-align: right; font-variant-numeric: tabular-nums; border-right: 1px solid var(--oe-gray-200); }
+.oe-table--capex td:first-child { text-align: left; background: var(--oe-gray-100); border-right: 2px solid var(--oe-gray-200); }
+.oe-table--capex tbody tr:last-child td { font-weight: 700; background: var(--oe-accent-soft); }
+.oe-table--capex tbody tr:hover td { background: var(--oe-accent-soft); }
+
+/* ---- Tabella KPI editabile (righe categoria + celle input + barra azioni) */
+.oe-table__cat td {
+  background: var(--oe-accent-soft); color: var(--oe-accent);
+  text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; font-size: 12px;
+  padding: var(--oe-space-xs) var(--oe-space-s);
+}
+.oe-input--cell {
+  width: 80px; padding: var(--oe-space-xxs) var(--oe-space-xs); font-size: 13px;
+  text-align: right; font-variant-numeric: tabular-nums; background: var(--oe-accent-soft);
+  border: 1px solid var(--oe-gray-300);
+}
+.oe-input--cell:focus { outline: none; border-color: var(--oe-accent); }
+.oe-table__actions {
+  display: flex; justify-content: space-between; align-items: center; gap: var(--oe-space-s);
+  padding: var(--oe-space-3) var(--oe-space-s); background: var(--oe-gray-100); border-top: 1px solid var(--oe-gray-200);
+}
+
+/* ---- Recap (lista label + valore in grassetto + nota) ----------------- */
+.oe-recap { background: var(--oe-white); border: 1px solid var(--oe-gray-200); }
+.oe-recap__row {
+  display: flex; justify-content: space-between; align-items: baseline; gap: var(--oe-space-s);
+  padding: 9px var(--oe-space-s); border-bottom: 1px solid var(--oe-gray-100);
+}
+.oe-recap__row:last-of-type { border-bottom: 0; }
+.oe-recap__label { font-family: var(--oe-font-sans); font-size: 13px; color: var(--oe-fg-soft); flex: 1; }
+.oe-recap__value { font-family: var(--oe-font-sans); font-size: 14px; font-weight: 700; color: var(--oe-black); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.oe-recap__note { font-size: 12px; color: var(--oe-gray-600); padding: var(--oe-space-xs) var(--oe-space-s); border-top: 1px solid var(--oe-gray-200); }   /* niente corsivo: vedi The No-Italics Rule */
+
+/* ---- Pannello metriche (es. moltiplicatori): header accento + righe ---- */
+.oe-metrics { background: var(--oe-white); border: 1px solid var(--oe-gray-200); }
+.oe-metrics__head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: var(--oe-space-3) var(--oe-space-s); background: var(--oe-accent); color: var(--oe-white);
+}
+.oe-metrics__title { font-family: var(--oe-font-sans); font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.oe-metrics__title svg { width: 14px; height: 14px; fill: none; stroke: var(--oe-on-dark-accent); stroke-width: 1.8; stroke-linecap: round; }
+.oe-metrics__range { color: var(--oe-on-dark-accent); font-size: 12px; font-weight: 600; }
+.oe-metrics__row {
+  display: flex; justify-content: space-between; align-items: center; gap: var(--oe-space-xs);
+  padding: var(--oe-space-3) var(--oe-space-s); border-bottom: 1px solid var(--oe-gray-100);
+}
+.oe-metrics__row:last-of-type { font-weight: 700; background: var(--oe-accent-soft); border-bottom: 0; }
+.oe-metrics__label { font-family: var(--oe-font-sans); font-size: 13px; color: var(--oe-gray-800); flex: 1; }
+.oe-metrics__sub { font-size: 12px; color: var(--oe-gray-600); margin-top: 1px; }
+.oe-metrics__value { font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; min-width: 44px; text-align: right; }
+.oe-metrics__link { padding: var(--oe-space-3) var(--oe-space-s); border-top: 1px solid var(--oe-gray-200); font-size: 13px; color: var(--oe-accent); font-weight: 500; }
+
+/* =======================================================================
+   GRAFICI (v0.6.0) — stili del motore src/charts/oe-charts.js
+   Figura, controlli di vista, stati interattivi, mappa con classifica,
+   tooltip. I colori dei grafici arrivano dai token --oe-chart-*.
+   ======================================================================= */
+
+/* Riquadro della figura. Regola fissa: 32px sopra, 40px sotto (24/32 su mobile),
+   il testo che segue non tocca mai il bordo. Fondo opposto alla fascia:
+   grigio su fascia bianca, bianco su fascia grigia o nota metodologica.
+   .fig / .fig__* restano come alias per le pagine fatte prima della v0.6.0. */
+.oe-fig, .fig {
+  margin: var(--oe-space-l) 0 var(--oe-space-xl);
+  border: 1px solid var(--oe-gray-200);
+  padding: var(--oe-space-m);
+  background: var(--oe-bg-elev);
+}
+.oe-band--elev .oe-fig, .oe-band--nota .oe-fig,
+.oe-band--elev .fig, .oe-band--nota .fig { background: var(--oe-white); }
+.oe-fig + h3, .fig + h3 { margin-top: var(--oe-space-l); }
+.oe-fig__head, .fig__head { margin-bottom: var(--oe-space-s); }
+.oe-fig__title, .fig__title {
+  font-family: var(--oe-font-sans); font-weight: 600; font-size: 17px; line-height: 1.35;
+  margin: var(--oe-space-xxs) 0 0; color: var(--oe-fg); max-width: none;
+}
+
+/* Regola fissa: il testo sotto un grafico non va MAI su due colonne. Il commento a un
+   grafico si legge di seguito, a fascia piena; .oe-text-2col è solo per il testo lungo
+   che non segue un grafico. Rete di sicurezza: se compare dopo una figura nella stessa
+   fascia, torna a una colonna da solo. */
+.oe-fig ~ .oe-text-2col, .fig ~ .oe-text-2col, .oe-fig ~ .text-2col, .fig ~ .text-2col,
+.oe-fig ~ * .oe-text-2col, .fig ~ * .oe-text-2col { columns: 1; }
+
+/* controllo segmentato che cambia vista */
+.oe-fig__ctrl {
+  display: flex; align-items: center; gap: var(--oe-space-s); flex-wrap: wrap;
+  margin: 0 0 var(--oe-space-s);
+}
+.oe-fig__ctrl-label {
+  font-family: var(--oe-font-mono); font-size: 12px; text-transform: uppercase;
+  letter-spacing: .04em; color: var(--oe-fg-muted);
+}
+.oe-segment__btn:focus-visible { outline: 2px solid var(--oe-accent); outline-offset: 2px; }
+
+/* SVG e stati */
+.oe-chart { display: block; width: 100%; overflow: hidden; font-family: var(--oe-font-sans); }
+.oe-chart text { font-family: var(--oe-font-sans); }
+.oe-chart .oe-bar { transition: width .38s cubic-bezier(.2,.7,.2,1), opacity .14s linear; }
+.oe-chart .oe-row, .oe-chart .oe-region { cursor: default; outline: none; }
+.oe-chart .oe-row:hover .oe-bar, .oe-chart .oe-row:focus-visible .oe-bar { opacity: .86; }
+.oe-chart .oe-row:focus-visible .oe-lab, .oe-chart .oe-row:focus-visible .oe-val { font-weight: 600; }
+.oe-chart .oe-lg { cursor: pointer; }
+.oe-chart[data-focus] .oe-bar { opacity: .22; }
+.oe-chart[data-focus="0"] [data-series="0"].oe-bar,
+.oe-chart[data-focus="1"] [data-series="1"].oe-bar,
+.oe-chart[data-focus="2"] [data-series="2"].oe-bar { opacity: 1; }
+/* numeri: Atkinson tabulare; Hedvig solo per le cifre display (≥ 28px) */
+.oe-chart .oe-val { font-family: var(--oe-font-sans); font-weight: 500; font-variant-numeric: tabular-nums; }
+.oe-chart .oe-val--display { font-family: var(--oe-font-serif); font-weight: 400; letter-spacing: -.01em; }
+.oe-chart .oe-src { font-family: var(--oe-font-mono); letter-spacing: .04em; }
+/* sankey: al passaggio su un nodo gli altri flussi si attenuano */
+.oe-sankey .oe-flow .oe-bar { transition: stroke-opacity .14s linear; }
+.oe-sankey .oe-flow:hover .oe-bar { stroke-opacity: .6; opacity: 1; }
+.oe-sankey .oe-flow.is-dim .oe-bar { stroke-opacity: .06; }
+[data-oe-chart].is-in { animation: oe-chart-in .4s cubic-bezier(.2,.7,.2,1); }
+@keyframes oe-chart-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* mappa + classifica sincronizzata */
+.oe-map { display: grid; grid-template-columns: minmax(260px, 380px) 1fr; gap: var(--oe-space-l); align-items: start; }
+.oe-map__svg { max-height: 520px; }
+.oe-region { transition: fill .32s cubic-bezier(.2,.7,.2,1); }
+.oe-region.is-on { stroke: var(--oe-accent); stroke-width: 1.6; }
+.oe-rank { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: var(--oe-space-l); font-size: 13px; }
+.oe-rank__i { display: flex; align-items: center; gap: var(--oe-space-xs); padding: 3px var(--oe-space-xxs); break-inside: avoid; cursor: default; }
+.oe-rank__i i { width: 10px; height: 10px; flex: 0 0 auto; }
+.oe-rank__i span { flex: 1 1 auto; color: var(--oe-fg-soft); }
+.oe-rank__i b { font-family: var(--oe-font-sans); font-weight: 500; font-size: 13px; font-variant-numeric: tabular-nums; }
+.oe-rank__i.is-on { background: var(--oe-accent-soft); }
+.oe-chart__foot {
+  display: flex; flex-wrap: wrap; gap: var(--oe-space-s); justify-content: space-between;
+  margin: var(--oe-space-s) 0 0; font-size: 12px; color: var(--oe-fg-muted);
+}
+.oe-chart__foot .oe-src { font-family: var(--oe-font-mono); letter-spacing: .04em; }
+
+/* tooltip: fondo scuro del tema, mai fuori palette */
+.oe-tip {
+  position: fixed; top: 0; left: 0; z-index: 60; pointer-events: none; opacity: 0;
+  transition: opacity .12s linear; background: var(--oe-bg-dark); color: var(--oe-white);
+  padding: 10px 12px; min-width: 180px; max-width: 280px; box-shadow: 0 4px 12px rgba(39,0,101,.18);
+}
+.oe-tip.is-on { opacity: 1; }
+.oe-tip__t { font-family: var(--oe-font-sans); font-weight: 600; font-size: 13px; margin-bottom: 2px; }
+.oe-tip__s {
+  font-family: var(--oe-font-mono); font-size: 12px; text-transform: uppercase;
+  letter-spacing: .04em; color: var(--oe-on-dark-accent); margin-bottom: 6px;
+}
+.oe-tip__r { display: flex; justify-content: space-between; gap: 12px; font-size: 12.5px; line-height: 1.5; color: rgba(255,255,255,.82); }
+.oe-tip__r b { font-family: var(--oe-font-sans); font-weight: 600; color: var(--oe-white); font-variant-numeric: tabular-nums; }
+.oe-tip__k { display: flex; align-items: center; gap: 6px; }
+.oe-tip__k i { width: 9px; height: 9px; display: inline-block; box-shadow: inset 0 0 0 1px rgba(255,255,255,.55); }
+
+@media (max-width: 767.98px) {
+  .oe-fig, .fig { padding: var(--oe-space-s); margin: var(--oe-space-m) 0 var(--oe-space-l); }
+  /* i grafici non si rimpiccioliscono fino all'illeggibile: larghezza minima e scorrimento */
+  [data-oe-chart] { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .oe-chart:not(.oe-map__svg) { min-width: 620px; }
+  .oe-map { grid-template-columns: 1fr; gap: var(--oe-space-m); }
+  .oe-map__svg { min-width: 0; max-height: 380px; margin-inline: auto; }
+  .oe-fig__ctrl { gap: var(--oe-space-xs); }
+  .oe-segment { flex-wrap: wrap; }
+}
+@media (max-width: 560px) { .oe-rank { columns: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .oe-chart .oe-bar, .oe-region { transition: none; }
+  [data-oe-chart].is-in { animation: none; }
+}
+@media print { .oe-fig__ctrl { display: none; } }
