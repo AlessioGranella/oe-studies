@@ -1,6 +1,6 @@
 # Check DS — ../../progetti/Studies/sito/metodologia/approccio-oe.html
 
-27/10/2026, 11:32:55 · regole lette da `design-system/src`
+27/10/2026, 19:10:22 · regole lette da `design-system/src`
 
 **Esito: 6 errori · 0 da verificare**
 
@@ -28,4 +28,4 @@ Non si correggono nella pagina: vanno sistemati nel design system (token canonic
 
 ## Note
 
-- Elementi in Mono (il DS lo riserva a chip, etichette dati e numerazione figure) — verificare: `span.oe-nav-analisi__badge`, `span.oe-tag-chip.oe-tag-chip--lime`, `p.oe-hero-analisi__cue`, `div.oe-kpi__label`, `span.path__label`, `b`, `p.ind__formula`, `span.deep__meta`, `span.oe-footer__hq-label`, `span.oe-footer__disclaimer-label`
+- Elementi in Mono (il DS lo riserva a chip, etichette dati e numerazione figure) — verificare: `span.oe-tag-chip.oe-tag-chip--lime`, `p.oe-hero-analisi__cue`, `div.oe-kpi__label`, `span.path__label`, `b`, `p.ind__formula`, `span.deep__meta`, `span.oe-footer__hq-label`, `span.oe-footer__disclaimer-label`

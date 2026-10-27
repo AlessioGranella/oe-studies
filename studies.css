@@ -41,12 +41,8 @@ strong { font-weight: 600; color: var(--oe-fg); }
 }
 .site__brand { display: flex; align-items: center; gap: var(--oe-space-s); color: var(--oe-black); }
 .site__logo { height: 20px; width: auto; display: block; }
-.site__badge {
-  font-family: var(--oe-font-mono); font-size: 13px; font-weight: 500;
-  text-transform: uppercase; letter-spacing: -0.01em; color: var(--oe-accent);
-  padding-left: var(--oe-space-s); border-left: 1px solid var(--oe-gray-300); line-height: 20px;
-}
-.site__links { display: flex; gap: var(--oe-space-l); list-style: none; margin: 0 0 0 auto; padding: 0; }
+/* label a sinistra accanto al logo, cerca e Accedi a destra */
+.site__links { display: flex; gap: var(--oe-space-l); list-style: none; margin: 0; padding: 0; }
 .site__link {
   font-family: var(--oe-font-sans); font-size: 15px; color: var(--oe-gray-900);
   padding-block: var(--oe-space-xxs); border-bottom: 2px solid transparent;
@@ -54,7 +50,7 @@ strong { font-weight: 600; color: var(--oe-fg); }
 }
 .site__link:hover { color: var(--oe-accent); }
 .site__link.is-active { color: var(--oe-accent); }
-.site__icons { display: flex; align-items: center; gap: var(--oe-space-xs); }
+.site__icons { display: flex; align-items: center; gap: var(--oe-space-xs); margin-left: auto; }
 .site__icon {
   display: inline-flex; align-items: center; gap: var(--oe-space-xs);
   min-width: 40px; height: 40px; justify-content: center; padding: 0 var(--oe-space-xs);
@@ -298,7 +294,6 @@ strong { font-weight: 600; color: var(--oe-fg); }
 }
 @media (max-width: 899.98px) {
   .site__links { display: none; }
-  .site__icons { margin-left: auto; }
   .reports__list { grid-template-columns: 1fr; }
   .reports__list.is-list .study { flex-direction: column; }
   .reports__list.is-list .study__media { width: 100%; aspect-ratio: 16 / 10; }
@@ -310,7 +305,6 @@ strong { font-weight: 600; color: var(--oe-fg); }
   .site { top: var(--oe-space-xs); }
   .site__bar { min-height: 52px; padding: var(--oe-space-xs) var(--oe-space-s); gap: var(--oe-space-s); }
   .site__logo { height: 16px; }
-  .site__badge { padding-left: var(--oe-space-3); }
   .site__icon span { display: none; }
 
   /* su mobile la foto sale in alto e il testo si appoggia sul viola pieno */
